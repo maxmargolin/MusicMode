@@ -4,12 +4,25 @@
   "name": "Skip2Actual",
   "description": "Skip to actual video",
   "version": "0.1",
-
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
+  "content_scripts": [{
+    "css": ["styles.css"],
+    "js": ["a.js"],
+    "matches": ["https://*/*"]   //["*://www.youtu/be.com*"]
+  }],
   "permissions": [
-    "activeTab"
-  ]
+    "activeTab",
+    "contextMenus",
+    "tabs","storage"
+  ],
+  "background": {
+    "scripts": [
+      "bg.js"
+    ],
+    "persistent": true
+  }
+
 }
