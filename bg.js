@@ -2,7 +2,7 @@ window.addEventListener("spfdone", process); // old youtube design
 window.addEventListener("yt-navigate-start", process); // new youtube design
 
 document.addEventListener("DOMContentLoaded", process); // one-time early processing
-window.addEventListener("load", Process); // one-time late postprocessing
+window.addEventListener("load", process); // one-time late postprocessing
 
 
 
@@ -15,14 +15,16 @@ function process() {
         ["kOkQ4T5WO9E", 15],
         ["CTFtOOh47oo", 21],
         ["dPI-mRFEIH0", 23],
-        ["DK_0jXPuIr0", 35],//
+        ["DK_0jXPuIr0", 35],
         ["2vjPBrBU-TM", 10],
         ["uxpDa-c-4Mc", 19],
         ["34Na4j8AVgA", 42],
         ["EgqUJOudrcM", 29],
         ["UprcpdwuwCg", 18],
         ["k0BWlvnBmIE", 43],
-        ["uuwfgXD8qV8", 29]
+        ["uuwfgXD8qV8", 29],
+        ["aatr_2MstrI", 30],
+        ["ij_0p_6qTss", 45]
     ];
 
 
