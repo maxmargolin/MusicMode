@@ -10,19 +10,14 @@
   },
   "content_scripts": [{
     "css": ["styles.css"],
-    "js": ["a.js"],
-    "matches": ["https://*/*"]   //["*://www.youtu/be.com*"]
+    "js": ["bg.js"],
+    "matches": ["https://*/*"],   //["*://www.youtu/be.com*"]
+    "run_at": "document_start"
   }],
   "permissions": [
     "activeTab",
     "contextMenus",
-    "tabs","storage"
-  ],
-  "background": {
-    "scripts": [
-      "bg.js"
-    ],
-    "persistent": true
-  }
+    "tabs","storage","webNavigation"
+  ]
 
 }
