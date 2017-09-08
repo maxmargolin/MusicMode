@@ -4,6 +4,16 @@ window.addEventListener("yt-navigate-start", process); // new youtube design
 document.addEventListener("DOMContentLoaded", process); // one-time early processing
 window.addEventListener("load", process); // one-time late postprocessing
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.greeting == "hello")
+        {
+            var curl=location.href;
+            var vID = curl.match(/v\=(.{11})/);
+            sendResponse({farewell: vID[1]});
+
+        }
+    });
 
 
 
@@ -50,8 +60,15 @@ function process() {
         ["pa14VNsdSYM", 15],
         ["-59jGD4WrmE", 36],
         ["Kb24RrHIbFk", 9],
-        ["tPZbBBdfr5E",18],
-        ["foE1mO2yM04",32]
+        ["tPZbBBdfr5E", 18],
+        ["foE1mO2yM04", 32],
+        ["e2vBLd5Egnk", 6],
+        ["dT2owtxkU8k", 25],
+        ["v-Dur3uXXCQ", 59],
+        ["vXyBcKV0UIo", 9],
+        ["GTyN-DB_v5M", 14],
+        ["tt2k8PGm-TI", 13],
+        ["w4s6H4ku6ZY", 6]
     ];
 
 
@@ -77,7 +94,7 @@ function process() {
         if(keep){
                  chrome.storage.local.get(vID[1],function(result)
                  {
-                    if(!(result[vID[1]]=== undefined))
+                    if(!(result[vID[1]]=== undefined || result[vID[1]]==0))
                         window.location.replace(location.href+"&t=" + result[vID[1]]);
                 });
             }

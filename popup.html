@@ -3,16 +3,23 @@
 <head>
     <title>Skip hidden ads</title>
     <script src="add.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="ps.css">
 </head>
+
 <br>
-<h1>Skip hidden ads</h1>
-<textarea id="videoID">video ID</textarea>
-<textarea id="t">Seconds</textarea>
-<input type="button" id="addButton" value="add"> 
-<input type="button" id="getButton" value="get"> 
+<h2>Skip to Actual Video</h2>
+<div class="inputWithIcon">
+    <input type="text" placeholder="Video ID" id="videoID" maxlength="11" required>
+    <i class="fa fa-youtube-play fa-lg fa-fw" aria-hidden="true"></i>
+</div>
+<div class="inputWithIcon">
+    <input type="text" placeholder="Seconds" id="t" maxlength="5" required autofocus>
+    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true"></i>
+</div>
+<input type="button" id="setButton" value="Set Rule" align="middle">
 <br>Made by Max Hyper
 </br>
-<a href="https://www.github.com/maxmargolin/Actual">Source Code</a>
+<a href="https://www.github.com/maxmargolin/Actual" target="_blank">Source Code</a>
 </p>
-</body>
 </html>
