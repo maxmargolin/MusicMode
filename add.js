@@ -8,7 +8,7 @@ window.onload = function(){
                existingTimestamp = result[currentID];
                if(existingTimestamp == undefined)
                    existingTimestamp = 0;
-                document.getElementById('t').innerHTML = existingTimestamp;
+                document.getElementById('t').value = existingTimestamp;
             });
         });
     });
