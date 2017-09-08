@@ -4,13 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/bg.js" line="51" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef13c4bc-db49-4b18-bbcb-01b4b466616c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/icon.png" afterPath="$PROJECT_DIR$/icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bg.js" afterPath="$PROJECT_DIR$/bg.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popup.html" afterPath="$PROJECT_DIR$/popup.html" />
-    </list>
+    <list default="true" id="ef13c4bc-db49-4b18-bbcb-01b4b466616c" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -170,7 +164,7 @@
       <workItem from="1504335991167" duration="5126000" />
       <workItem from="1504346442627" duration="3220000" />
       <workItem from="1504365606126" duration="2391000" />
-      <workItem from="1504868001813" duration="884000" />
+      <workItem from="1504868001813" duration="948000" />
     </task>
     <task id="LOCAL-00001" summary="regex-like selection">
       <created>1504340939568</created>
@@ -204,7 +198,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31946000" />
+    <option name="totallyTimeSpent" value="32010000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
