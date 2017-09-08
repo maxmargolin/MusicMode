@@ -24,23 +24,65 @@ function process() {
         ["k0BWlvnBmIE", 43],
         ["uuwfgXD8qV8", 29],
         ["aatr_2MstrI", 30],
-        ["ij_0p_6qTss", 45]
+        ["ij_0p_6qTss", 45],
+        ["vWaRiD5ym74", 37],
+        ["QtXby3twMmI", 29],
+        ["iEPTlhBmwRg", 45],
+        ["qpgTC9MDx1o", 40],
+        ["09R8_2nJtjg", 26],
+        ["GKSRyLdjsPA", 63],
+        ["nYh-n7EOtMA", 20],
+        ["kJQP7kiw5Fk", 21],
+        ["vNoKguSdy4Y", 123],
+        ["pRpeEdMmmQ0", 11],
+        ["KQ6zr6kCPj8", 84],
+        ["SkTt9k4Y-a8", 138],
+        ["LjhCEhWiKXk", 15],
+        ["Pgmx7z49OEk", 69],
+        ["tg00YEETFzg", 51],
+        ["lWA2pjMjpBs", 38],
+        ["QcIy9NiNbmo", 36],
+        ["j3CaHeakZF4", 68],
+        ["CduA0TULnow", 37],
+        ["C-u5WLJ9Yk4", 16],
+        ["rJYcmq__nDM", 33],
+        ["nCkpzqqog4k", 41],
+        ["pa14VNsdSYM", 15],
+        ["-59jGD4WrmE", 36],
+        ["Kb24RrHIbFk", 9],
+        ["tPZbBBdfr5E",18],
+        ["foE1mO2yM04",32]
     ];
 
 
 
     var curl=location.href;
+    var vID = curl.match(/v\=(.{11})/);
+
     var timed = (curl.includes("\&t\=") || curl.includes("\?t\="));
-    if(!timed) {
+    if(!timed)
+     {
         var keep=true;
-        for (i = 0; i < db.length && keep; i++){
-        if (curl.includes("v\="+db[i][0])) {
-            location.href += "&t=" + db[i][1];
-            keep = false;
+        for (i = 0; i < db.length && keep; i++) //look in static db
+        {
+            if (vID[1]==(db[i][0]))
+            {
+             window.location.replace(location.href+"&t=" + db[i][1]);
+              keep = false;
+            }
+
+
         }
+
+        if(keep){
+                 chrome.storage.local.get(vID[1],function(result)
+                 {
+                    if(!(result[vID[1]]=== undefined))
+                        window.location.replace(location.href+"&t=" + result[vID[1]]);
+                });
+            }
+}
 }
 
-}
-}
 
 

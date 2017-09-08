@@ -9,7 +9,6 @@
     "default_popup": "popup.html"
   },
   "content_scripts": [{
-    "css": ["styles.css"],
     "js": ["bg.js"],
     "matches": ["https://*/*"],   //["*://www.youtu/be.com*"]
     "run_at": "document_start"
