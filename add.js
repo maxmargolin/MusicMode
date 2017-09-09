@@ -1,6 +1,6 @@
 window.onload = function(){
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
+        chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) { //ask for information for this page
             var currentID = response.farewell;
             document.getElementById('videoID').value = currentID;
 
@@ -15,13 +15,16 @@ window.onload = function(){
 
 
 document.getElementById('setButton').onclick=function () {
-        var ID =document.getElementById("videoID").value;
-        var t =document.getElementById("t").value;
+    var ID = document.getElementById("videoID").value;
+    var t = document.getElementById("t").value;
 
-        var obj= {};
+    if (t != "0")
+    {
+        var obj = {};
         obj[ID] = t;
 
         chrome.storage.local.set(obj);
+    }
 
     };
 };
