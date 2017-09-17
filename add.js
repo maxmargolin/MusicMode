@@ -1,4 +1,28 @@
 window.onload = function(){
+
+
+    chrome.storage.local.get("on",function(result){
+        document.getElementById("slideThree").checked = result["on"];
+           });
+
+
+
+    var checkbox = document.querySelector("input[name=check]");
+
+checkbox.addEventListener( 'change', function() {
+        var obj = {};
+    if(this.checked) {
+        
+        obj["on"] = true;
+        chrome.storage.local.set(obj);
+    } else {
+       obj["on"] = false;
+        chrome.storage.local.set(obj);
+    }
+});
+
+
+
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) { //ask for information for this page
             var currentID = response.farewell;
@@ -26,6 +50,10 @@ document.getElementById('setButton').onclick=function () {
         chrome.storage.local.set(obj);
     }
 
+
     };
+
+
+
 };
 

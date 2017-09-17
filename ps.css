@@ -1,3 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
+@import url(//codepen.io/chrisdothtml/pen/ojLzJK.css);
+
+* {
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-timing-function: ease;
+    transition-timing-function: ease;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
 
 input[type=text]{
     width:100%;
@@ -50,6 +66,9 @@ input[type=text]:focus{
 
 
 .btn input{
+
+    -webkit-transition-duration: .6s;
+    transition-duration: .6s;
     width: 100%;
     background: #d93434;
     background-image: -webkit-linear-gradient(top, #d93434, #b82b2b);
@@ -149,3 +168,5 @@ input[type=text]:focus{
 .slideThree input[type=checkbox]:checked + label {
     left: 43px;
 }
+
+

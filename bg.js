@@ -1,9 +1,10 @@
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 1; //change to force update
+        currentDBVersion = 2; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = [
                 ["version", currentDBVersion], // mark version in storage
+                ["on",true],
                 //Video id and start point
                 ["weeI1G46q0o", 29],
                 ["YQHsXMglC9A", 77],
@@ -60,6 +61,7 @@
                 ["nYh-n7EOtMA", 20],
                 ["fKopy74weus", 22],
                 ["kJQP7kiw5Fk", 21],
+                ["u3u22OYqFGo",102]
                 ["vNoKguSdy4Y", 123],
                 ["pRpeEdMmmQ0", 11],
                 ["KQ6zr6kCPj8", 84],
@@ -131,16 +133,28 @@ chrome.runtime.onMessage.addListener(
 //skip part of video
 function process() {
 
-
     var curl = location.href; //current url
     var vID = curl.match(/v\=(.{11})/); //regex for ID
 
     var timed = (curl.includes("\&t\=") || curl.includes("\?t\="));
     if (!timed) {  //only if video is not timed
-        chrome.storage.local.get(vID[1], function (result) {
-            if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
-                window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
+        
+
+            chrome.storage.local.get("on",function(result){
+                if(result["on"])
+                {
+                        chrome.storage.local.get(vID[1], function (result) {
+                            if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
+                                window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
+                        });
+                }
+
         });
+
+
+        
+    
+
     }
 }
 
