@@ -1,20 +1,13 @@
 
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 2 ; //change to force update
+        currentDBVersion = 5 ; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = [
                 ["version", currentDBVersion], // mark version in storage
                 ["on",true],
                 //Video id and start point
-                  ["weeI1G46q0o", 29],
-                  ["YQHsXMglC9A", 77],
-                  ["3RSlhNJFohI", 28],
-                  ["iGk5fR-t5AU", 65],
-                  ["kOkQ4T5WO9E", 15],
-                  ["jQd5OEl1W-Q", 18],
-                  ["EgT_us6AsDg", 19],
-                  ["CTFtOOh47oo", 21],
+                  ["weeI1G46q0o", 29],["YQHsXMglC9A", 77],  ["3RSlhNJFohI", 28],  ["iGk5fR-t5AU", 65],["kOkQ4T5WO9E", 15],["jQd5OEl1W-Q", 18],  ["EgT_us6AsDg", 19],  ["CTFtOOh47oo", 21],
                   ["dPI-mRFEIH0", 23],
                   ["d7ypnPjz81I", 29],
                   ["DK_0jXPuIr0", 35],
@@ -48,6 +41,7 @@
           				["YnwfTHpnGLY",4],
           				["gCYcHz2k5x0",4],
           				["9vMh9f41pqE",4],
+                  ["HcXNPI-IPPM",138],
           				["KnL2RJZTdA4",4],
           				["5dbEhBKGOtY",20],
           				["dzHdo4yxidc",4],
@@ -154,40 +148,11 @@
                   ["GTyN-DB_v5M", 14],
                   ["tt2k8PGm-TI", 13],
                   ["w4s6H4ku6ZY", 6],
-                  ["NU9JoFKlaZ0", 103],
-                  ["mdB3Oyd5HtU", 15],
-                  ["SeIJmciN8mo",40],
-                  ["X0DeIqJm4vM", 15],
-                  ["vx2u5uUu3DE", 20],
-                  ["eP4eqhWc7sI",33],
-                  ["GQ95z6ywcBY", 167],
-                  ["R7yfISlGLNU", 25],
-                  ["qV5lzRHrGeg",2],
-                  ["TdrL3QxjyVw",17],
-                  ["xdYFuCp3m9k",0],
-                  ["nIjVuRTm-dc", 11],
-                  ["4wTLjEqj5Xk", 8],
-                  ["XleOkGsYgO8",4],
-                  ["wagn8Wrmzuc",34],
-                  ["GCdwKhTtNNw", 13],
-                  ["vdrqA93sW-8", 22],
-                  ["GI6CfKcMhjY", 23],
-                  ["tKi9Z-f6qX4", 3],
-                  ["-LX2kpeyp80", 8],
-                  ["Q15wN8JC2L4", 6],
-                  ["d2smz_1L2_0", 148],
-                  ["F4ELqraXx-U",8],
-                  ["dvf--10EYXw",3],
-                  ["jhC1pI76Rqo",17],
-                  ["wtC744jVWmE",15],
-                  ["Gd9OhYroLN0",8],
-                  ["ScNNfyq3d_w",58],
-                  ["-CmadmM5cOk", 9],
-                  ["kzQTc0-iBX8", 35],
-                  ["t5Sd5c4o9UM", 30],
-                  ["413KGp9VDkY", 47],
-                  ["-Ju62LXCdmM", 27],
-                  ["CW5oGRx9CLM", 9],
+                  ["NU9JoFKlaZ0", 103],  ["mdB3Oyd5HtU", 15],  ["SeIJmciN8mo",40],
+                  ["X0DeIqJm4vM", 15],  ["vx2u5uUu3DE", 20],  ["eP4eqhWc7sI",33],["GQ95z6ywcBY", 167],["R7yfISlGLNU", 25],  ["qV5lzRHrGeg",2],  ["TdrL3QxjyVw",17],  ["xdYFuCp3m9k",0],  ["nIjVuRTm-dc", 11],
+                  ["4wTLjEqj5Xk", 8],  ["XleOkGsYgO8",4],["wagn8Wrmzuc",34],  ["GCdwKhTtNNw", 13],["vdrqA93sW-8", 22],  ["GI6CfKcMhjY", 23],  ["tKi9Z-f6qX4", 3],  ["-LX2kpeyp80", 8],
+                  ["Q15wN8JC2L4", 6],  ["d2smz_1L2_0", 148],  ["F4ELqraXx-U",8],  ["dvf--10EYXw",3],["jhC1pI76Rqo",17],  ["wtC744jVWmE",15],  ["Gd9OhYroLN0",8],
+                  ["ScNNfyq3d_w",58],["-CmadmM5cOk", 9],["kzQTc0-iBX8", 35],["t5Sd5c4o9UM", 30],["413KGp9VDkY", 47],  ["-Ju62LXCdmM", 27],["CW5oGRx9CLM", 9],
             ];
 
 
@@ -199,8 +164,21 @@
 
                 chrome.storage.local.set(obj);
             }
+
+
         }
     });
+
+
+
+
+            chrome.storage.sync.get("totalTime", function (time) {
+                if (time["totalTime"]==undefined){
+                    var obj = {};
+                    obj["totalTime"] =  0 ;
+                    chrome.storage.sync.set(obj);
+                  }
+            });
 
 
 
@@ -242,12 +220,29 @@ function process() {
                 if(result["on"])
                 { //sync storage beforelocal
                   chrome.storage.sync.get(vID[1], function (result) {
-                      if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
+                      if (!(result[vID[1]] === undefined || result[vID[1]] == 0)){
                           window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
+
+                          chrome.storage.sync.get("totalTime", function (time) {
+                            var newTime = {};
+                            newTime["totalTime"] =  time["totalTime"] + result[vID[1]] ;
+                            chrome.storage.sync.set(newTime);
+                          });
+                        }
                       else {
                         chrome.storage.local.get(vID[1], function (result) {
                             if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
+                            {
                                 window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
+
+
+                                chrome.storage.sync.get("totalTime", function (time) {
+                                  var newTime = {};
+                                  newTime["totalTime"] =  time["totalTime"] + result[vID[1]];
+                                  chrome.storage.sync.set(newTime);
+                                });
+
+                            }
                         });
                       }
                   });
