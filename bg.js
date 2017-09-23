@@ -8,10 +8,7 @@
                 ["on",true],
                 //Video id and start point
                   ["weeI1G46q0o", 29],["YQHsXMglC9A", 77],  ["3RSlhNJFohI", 28],  ["iGk5fR-t5AU", 65],["kOkQ4T5WO9E", 15],["jQd5OEl1W-Q", 18],  ["EgT_us6AsDg", 19],  ["CTFtOOh47oo", 21],
-                  ["dPI-mRFEIH0", 23],
-                  ["d7ypnPjz81I", 29],
-                  ["DK_0jXPuIr0", 35],
-                  ["2vjPBrBU-TM", 10],
+                  ["dPI-mRFEIH0", 23],  ["d7ypnPjz81I", 29],  ["DK_0jXPuIr0", 35],  ["2vjPBrBU-TM", 10],
                   ["uxpDa-c-4Mc", 19],
                   ["0mVck88W01I", 9],
                   ["Lh2oWbaRvQg",10],
@@ -225,7 +222,7 @@ function process() {
 
                           chrome.storage.sync.get("totalTime", function (time) {
                             var newTime = {};
-                            newTime["totalTime"] =  time["totalTime"] + result[vID[1]] ;
+                            newTime["totalTime"] =  parseInt(time["totalTime"]) +  parseInt(result[vID[1]]) ;
                             chrome.storage.sync.set(newTime);
                           });
                         }
@@ -238,7 +235,7 @@ function process() {
 
                                 chrome.storage.sync.get("totalTime", function (time) {
                                   var newTime = {};
-                                  newTime["totalTime"] =  time["totalTime"] + result[vID[1]];
+                                  newTime["totalTime"] =  parseInt(time["totalTime"]) + parseInt(result[vID[1]]);
                                   chrome.storage.sync.set(newTime);
                                 });
 
