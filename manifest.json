@@ -3,7 +3,7 @@
 	"name": "Music Mode for YouTube",
 	"short_name": "Music Mode",
 	"description": "AutoSkip to the actual song or video on YouTube!",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"browser_action": {
 		"default_icon": "icon.png",
 		"default_popup": "popup.html"
