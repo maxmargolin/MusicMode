@@ -1,13 +1,11 @@
 
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 7 ; //change to force update
+        currentDBVersion = 4 ; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = get_data(currentDBVersion);
 
-
-
-
+            //add to local storage
             for (var i = 0; i < db.length; i++) {
                 var obj = {};
                 obj[db[i][0]] = db[i][1];
@@ -21,7 +19,7 @@
 
 
 
-
+      //begin counting total
             chrome.storage.sync.get("totalTime", function (time) {
                 if (time["totalTime"]==undefined){
                     var obj = {};

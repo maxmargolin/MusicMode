@@ -9,7 +9,7 @@
 		"default_popup": "popup.html"
 	},
 	"content_scripts": [{
-		"js": ["bg.js"],
+		"js": ["time_data.js","bg.js"],
 		"matches": ["*://*.youtube.com/*"],
     "run_at": "document_start"
 	}],
