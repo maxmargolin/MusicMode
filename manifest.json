@@ -9,7 +9,8 @@
 	},
 	"content_scripts": [{
 		"js": ["bg.js"],
-		"matches": ["https://*/*"]
+		"matches": ["https://*/*"],
+    "run_at": "document_start"
 	}],
 	"permissions": [
 		"activeTab",

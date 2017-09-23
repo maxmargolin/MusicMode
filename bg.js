@@ -1,7 +1,7 @@
 
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 2; //change to force update
+        currentDBVersion = 2 ; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = [
                 ["version", currentDBVersion], // mark version in storage
@@ -16,15 +16,19 @@
                   ["EgT_us6AsDg", 19],
                   ["CTFtOOh47oo", 21],
                   ["dPI-mRFEIH0", 23],
+                  ["d7ypnPjz81I", 29],
                   ["DK_0jXPuIr0", 35],
                   ["2vjPBrBU-TM", 10],
                   ["uxpDa-c-4Mc", 19],
+                  ["0mVck88W01I", 9],
                   ["34Na4j8AVgA", 42],
                   ["EgqUJOudrcM", 29],
                   ["UprcpdwuwCg", 18],
                   ["niqrrmev4mA",133],
+                  ["97xnWVZYq_Q",13],
                   ["k0BWlvnBmIE", 43],
                   ["uuwfgXD8qV8", 29],
+                  ["ANS9sSJA9Yc", 32],
                   ["fyaI4-5849w", 8],
                   ["ocDlOD1Hw9k", 17],
                   ["-MsvER1dpjM", 7],
@@ -119,6 +123,7 @@
                   ["KQ6zr6kCPj8", 84],
                   ["SkTt9k4Y-a8", 138],
                   ["LjhCEhWiKXk", 15],
+                  ["WUcXQ--yGWQ", 17],
                   ["Pgmx7z49OEk", 69],
                   ["tg00YEETFzg", 51],
                   ["lWA2pjMjpBs", 38],
@@ -163,11 +168,18 @@
                   ["-LX2kpeyp80", 8],
                   ["Q15wN8JC2L4", 6],
                   ["d2smz_1L2_0", 148],
+                  ["F4ELqraXx-U",8],
                   ["dvf--10EYXw",3],
                   ["-CmadmM5cOk", 9],
                   ["kzQTc0-iBX8", 35],
-                  ["t5Sd5c4o9UM", 30]
+                  ["t5Sd5c4o9UM", 30],
+                  ["413KGp9VDkY", 47],
+                  ["-Ju62LXCdmM", 27],
+                  ["CW5oGRx9CLM", 9],
             ];
+
+
+
 
             for (var i = 0; i < db.length; i++) {
                 var obj = {};
@@ -180,57 +192,26 @@
 
 
 
-//catch video change
-window.addEventListener("spfdone", process); // old youtube design
+//cach the change
+    window.addEventListener("spfdone", process); // old youtube design
+    window.addEventListener("yt-navigate-start", process); // new youtube design
+
+    document.addEventListener("DOMContentLoaded", process); // one-time early processing
+    window.addEventListener("load", process); // one-time late postprocessing
 
 
 
+    //popup is requesting id
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+            if (request.greeting == "hello")
+            {
+                var curl=location.href;
+                var vID = curl.match(/v\=(.{11})/);
+                sendResponse({farewell: vID[1]});
 
-
-window.addEventListener("yt-navigate-start", process); // new youtube design // video switch
-
-document.addEventListener("DOMContentLoaded", process); // one-time early processing  //refresh
-window.addEventListener("load", process); // one-time late postprocessing //refresh
-
-/*////////
-window.addEventListener("load", process);
-domwindow.addEventListener("load",process);
-document.addEventListener("load",process);
-
-video.addEventListener("loadstart",process);
-video.addEventListener("loadmetadata",process);
-
-window.addEventListener("loadstart",process);
-window.addEventListener("loadmetadata",process);
-
-document.addEventListener("loadstart",process);
-document.addEventListener("loadmetadata",process);
-document_start.addEventListener("loadstart",process);
-document_start.addEventListener("loadmetadata",process);
-
-/////////*/
-
-
-//popup is requesting id
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.greeting == "hello")
-        {
-            var curl=location.href;
-            var vID = curl.match(/v\=(.{11})/);
-            sendResponse({farewell: vID[1]});
-
-        }
-    });
-
-
-
-
-    $('video').get(0).addEventListener('ended', function(e) {
-        window.alert('The video ended!');
-    });
-
-
+            }
+        });
 
 
 //skip part of video
@@ -247,11 +228,19 @@ function process() {
 
             chrome.storage.local.get("on",function(result){
                 if(result["on"])
-                {
+                { //sync storage beforelocal
+                  chrome.storage.sync.get(vID[1], function (result) {
+                      if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
+                          window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
+                      else {
                         chrome.storage.local.get(vID[1], function (result) {
                             if (!(result[vID[1]] === undefined || result[vID[1]] == 0))
                                 window.location.replace(location.href + "&t=" + result[vID[1]]);   //change url
                         });
+                      }
+                  });
+
+
                 }
 
         });

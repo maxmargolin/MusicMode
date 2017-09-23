@@ -12,7 +12,7 @@ window.onload = function(){
 checkbox.addEventListener( 'change', function() {
         var obj = {};
     if(this.checked) {
-        
+
         obj["on"] = true;
         chrome.storage.local.set(obj);
     } else {
@@ -28,11 +28,20 @@ checkbox.addEventListener( 'change', function() {
             var currentID = response.farewell;
             document.getElementById('videoID').value = currentID;
 
-            chrome.storage.local.get(currentID,function(result){
-               existingTimestamp = result[currentID];
-               if(existingTimestamp == undefined)
-                   existingTimestamp = 0;
-                document.getElementById('t').value = existingTimestamp;
+            // sync storage before local
+            chrome.storage.sync.get(currentID,function(result){
+              var  existingTimestamp = result[currentID];
+              document.getElementById('t').value = existingTimestamp;
+               if(existingTimestamp == undefined || existingTimestamp == 0)
+               {
+                 chrome.storage.local.get(currentID,function(sresult){
+                    existingTimestamp = sresult[currentID];
+                    if(existingTimestamp == undefined)
+                        existingTimestamp = 0;
+                    document.getElementById('t').value = existingTimestamp;
+                 });
+                 }
+
             });
         });
     });
@@ -47,7 +56,7 @@ document.getElementById('setButton').onclick=function () {
         var obj = {};
         obj[ID] = t;
 
-        chrome.storage.local.set(obj);
+        chrome.storage.sync.set(obj);
     }
 
 
@@ -56,4 +65,3 @@ document.getElementById('setButton').onclick=function () {
 
 
 };
-
