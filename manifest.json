@@ -1,7 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Music Mode for YouTube",
-	"description": "Skip to actual video",
+	"short_name": "Music Mode",
+	"description": "AutoSkip to the actual song or video on YouTube!",
 	"version": "0.1",
 	"browser_action": {
 		"default_icon": "icon.png",
@@ -9,12 +10,11 @@
 	},
 	"content_scripts": [{
 		"js": ["bg.js"],
-		"matches": ["https://*/*"],
+		"matches": ["*://*.youtube.com/*"],
     "run_at": "document_start"
 	}],
 	"permissions": [
 		"activeTab",
-		"contextMenus",
 		"tabs",
 		"storage",
 		"webNavigation"

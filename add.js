@@ -32,7 +32,7 @@ checkbox.addEventListener( 'change', function() {
             chrome.storage.sync.get(currentID,function(result){
               var  existingTimestamp = result[currentID];
               document.getElementById('t').value = existingTimestamp;
-               if(existingTimestamp == undefined || existingTimestamp == 0)
+               if(existingTimestamp == undefined)
                {
                  chrome.storage.local.get(currentID,function(sresult){
                     existingTimestamp = sresult[currentID];
@@ -51,7 +51,11 @@ document.getElementById('setButton').onclick=function () {
     var ID = document.getElementById("videoID").value;
     var t = document.getElementById("t").value;
 
-    if (t != "0")
+    if(ID.length!=11)
+        alert("video ID must be 11 characters");
+    else if(isNaN(t))
+            alert("Number of seconds to skip must be a positive number");
+    else
     {
         var obj = {};
         obj[ID] = t;
