@@ -1,7 +1,7 @@
 
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 4 ; //change to force update
+        currentDBVersion = 5 ; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = get_data(currentDBVersion);
 
