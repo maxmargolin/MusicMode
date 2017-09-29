@@ -1,7 +1,9 @@
 
+
+
  chrome.storage.local.get("version",function(result)
     {
-        currentDBVersion = 5 ; //change to force update
+        currentDBVersion = 6 ; //change to force update
         if(!(result["version"]===currentDBVersion)) {
             var db = get_data(currentDBVersion);
 
@@ -97,6 +99,7 @@ function process() {
 
 
                 }
+                  $(".date style-scope ytd-video-secondary-info-renderer").text("Hello world!");
 
         });
 
