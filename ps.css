@@ -92,12 +92,7 @@ input[type=text]:focus{
 }
 
 .btn input:hover {
-<<<<<<< HEAD
     background: #3cb0fd;
-    text-decoration: none;
-=======
-    background: Black;
->>>>>>> 9c3dbbbe5d49aabb3ebac7d7a656b3ed538cbca3
 }
 
 .btn input:focus{
