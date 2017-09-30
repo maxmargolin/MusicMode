@@ -11,13 +11,13 @@
 	},
 	"content_scripts": [
 		{
-		"js": ["jquery-3.2.1.slim.min.js","time_data.js","bg.js"],
+		"js": ["time_data.js","bg.js"],
 		"matches": ["*://*.youtube.com/*"],
     "run_at": "document_start"
 	},
 	{
 	        "matches": ["*://*/*"],
-	        "js": ["t.js"],
+	        "js": ["inner.js"],
 	        "run_at": "document_idle"
 	    }],
 	"icons": {
