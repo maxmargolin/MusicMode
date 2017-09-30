@@ -3,7 +3,7 @@
 	"name": "Skipper - Music Mode for YouTube",
 	"short_name": "Skipper",
 	"description": "AutoSkip to the actual song or video on YouTube!",
-	"version": "0.3.4",
+	"version": "0.4.1",
 	"browser_action": {
 		"default_icon": "icon.png",
 		"default_popup": "popup.html",
@@ -11,15 +11,10 @@
 	},
 	"content_scripts": [
 		{
-		"js": ["time_data.js","bg.js"],
+		"js": ["time_data.js","bg.js","inner.js"],
 		"matches": ["*://*.youtube.com/*"],
     "run_at": "document_start"
-	},
-	{
-	        "matches": ["*://*/*"],
-	        "js": ["inner.js"],
-	        "run_at": "document_idle"
-	    }],
+	}],
 	"icons": {
     "48": "icon48.png",
     "128": "icon.png"
