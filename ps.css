@@ -92,27 +92,13 @@ input[type=text]:focus{
 }
 
 .btn input:hover {
-    background: #3cb0fd;
-    background-image: -webkit-linear-gradient(top, #3cb0fd, #00a6ff);
-    background-image: -moz-linear-gradient(top, #3cb0fd, #00a6ff);
-    background-image: -ms-linear-gradient(top, #3cb0fd, #00a6ff);
-    background-image: -o-linear-gradient(top, #3cb0fd, #00a6ff);
-    background-image: linear-gradient(to bottom, #3cb0fd, #00a6ff);
-    text-decoration: none;
+    background: Black;
 }
 
 .btn input:focus{
     background: limegreen;
 
 }
-
-
-
-
-
-
-
-
 
 
 

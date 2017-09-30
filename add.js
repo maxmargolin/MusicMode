@@ -35,17 +35,18 @@ window.onload = function() {
                 }, function(response) { //ask for information for this page
                         var currentID = response.farewell;
                         document.getElementById('videoID').value = currentID;
-
                         // sync storage before local
                         chrome.storage.sync.get(currentID, function(result) {
                                 var existingTimestamp = result[currentID];
                                 document.getElementById('t').value = existingTimestamp;
-                                if (existingTimestamp == undefined) {
+                                if (isNaN(existingTimestamp)) {
                                         chrome.storage.local.get(currentID, function(sresult) {
+                                                document.getElementById('t').value = "0";
                                                 existingTimestamp = sresult[currentID][0];
-                                                if (existingTimestamp == undefined)
+                                                if (isNaN(existingTimestamp))
                                                         existingTimestamp = 0;
                                                 document.getElementById('t').value = existingTimestamp;
+
                                         });
                                 }
 
