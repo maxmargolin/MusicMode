@@ -10,23 +10,16 @@ function alertFunc() {
   //video.currentTime+=100;
   var curl = location.href;
   var vID = curl.match(/v\=(.{11})/);
-  if (vID[1] == "pXRviuL6vMY")
-    if (currentTime >= 45 && currentTime <= 48)
-      video.currentTime = 55;
-  if (vID[1] == "tt2k8PGm-TI")
-    if (currentTime >= 123 && currentTime <= (123 + 3))
-      video.currentTime = 150;
-    else if (currentTime >= 326 && currentTime < Math.floor(totalDuration))
-    video.currentTime = Math.ceil(totalDuration);
-  if (vID[1] == "-59jGD4WrmE")
-    if (currentTime >= 278 && currentTime < Math.floor(totalDuration))
-      video.currentTime = Math.ceil(totalDuration);
-  if (vID[1] == "GKSRyLdjsPA")
-    if (currentTime >= 272 && currentTime < Math.floor(totalDuration))
-      video.currentTime = Math.ceil(totalDuration);
 
-  if (vID[1] == "gBRi6aZJGj4")
-    if (currentTime >= 180 && currentTime < Math.floor(totalDuration))
-      video.currentTime = Math.ceil(totalDuration);
+
+      chrome.storage.local.get(vID[1], function(result) {
+        for (var i = 1; i < result[vID[1]].length-1; i+=2) {
+          if (currentTime >= result[vID[1]][i] && currentTime <= (result[vID[1]][i] + 3))
+            video.currentTime = result[vID[1]][i+1];
+          }
+        if ((result[vID[1]].length%2)==0 && currentTime >= result[vID[1]][result[vID[1]].length-1] && Math.floor(currentTime<totalDuration))
+          video.currentTime = Math.ceil(totalDuration);
+      });
+
 
 }

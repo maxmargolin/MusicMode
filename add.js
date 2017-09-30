@@ -42,7 +42,7 @@ window.onload = function() {
         document.getElementById('t').value = existingTimestamp;
         if (existingTimestamp == undefined) {
           chrome.storage.local.get(currentID, function(sresult) {
-            existingTimestamp = sresult[currentID];
+            existingTimestamp = sresult[currentID][0];
             if (existingTimestamp == undefined)
               existingTimestamp = 0;
             document.getElementById('t').value = existingTimestamp;
