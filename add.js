@@ -38,34 +38,39 @@ window.onload = function() {
 
                         // sync storage before local
                         chrome.storage.sync.get(currentID, function(result) {
-                                var goLocal = true;
+                                var localEnd = true;
+                                var localStart = true;
                                 try {
                                         var start = result[currentID][0];
                                         var end = result[currentID][1];
 
                                         if (start != undefined && start != "0") {
-                                                goLocal = false;
+                                                localStart = false;
                                                 document.getElementById('start').value = ToTime(start);
                                         }
                                         if (end != undefined && end != "0") {
                                                 document.getElementById('end').value = ToTime(end);
-                                                goLocal = false;
+                                                localEnd = false;
                                         }
                                 } catch (err) {}
 
-                                if (goLocal) {
+                                if (localStart || localEnd) {
                                         chrome.storage.local.get(currentID, function(sresult) {
-                                                if (isNaN(start))
-                                                        start = 0;
-                                                try {
-                                                        if (start != undefined && start != 0)
-                                                                document.getElementById('start').value = ToTime(String(sresult[currentID][0]));
-                                                } catch (err) {}
 
-                                                try {
-                                                        if ((sresult[currentID].length - 1) % 2 == 1)
-                                                                document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
-                                                } catch (err) {}
+
+                                                if (localStart) {
+                                                        try {
+                                                                var start = sresult[currentID][0];
+                                                                if (start != undefined && start != 0)
+                                                                        document.getElementById('start').value = ToTime(String(start));
+                                                        } catch (err) {}
+                                                }
+                                                if (localEnd) {
+                                                        try {
+                                                                if ((sresult[currentID].length - 1) % 2 == 1)
+                                                                        document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
+                                                        } catch (err) {}
+                                                }
 
                                         });
                                 }

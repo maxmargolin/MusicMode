@@ -13,7 +13,7 @@ function InSkipper() {
                         var vID = location.href.match(/v\=(.{11})/);
 
 
-                        chrome.storage.local.get(vID[1], function(result) {
+                        chrome.storage.sync.get(vID[1], function(result) {
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
                                         if (inSkipRange(currentTime, skipTime)) {
@@ -29,7 +29,7 @@ function InSkipper() {
                         });
 
 
-                        chrome.storage.sync.get(vID[1], function(result) {
+                        chrome.storage.local.get(vID[1], function(result) {
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
                                         if (inSkipRange(currentTime, skipTime)) {
