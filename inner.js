@@ -1,4 +1,4 @@
-setInterval(InSkipper, 1000);
+setInterval(InSkipper, 500);
 
 
 
@@ -10,8 +10,7 @@ function InSkipper() {
                         let currentTime = video.currentTime; // Fractional, in seconds
                         let totalDuration = video.duration;
                         //video.currentTime+=100;
-                        var curl = location.href;
-                        var vID = curl.match(/v\=(.{11})/);
+                        var vID = location.href.match(/v\=(.{11})/);
 
 
                         chrome.storage.local.get(vID[1], function(result) {
@@ -28,6 +27,26 @@ function InSkipper() {
                                         TotalTimeUpdate(totalDuration - currentTime);
                                 }
                         });
+
+
+                        chrome.storage.sync.get(vID[1], function(result) {
+                                for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
+                                        var skipTime = result[vID[1]][i];
+                                        if (inSkipRange(currentTime, skipTime)) {
+                                                video.currentTime = result[vID[1]][i + 1];
+                                                TotalTimeUpdate(result[vID[1]][i + 1] - currentTime);
+                                        }
+                                }
+
+                                var end = result[vID[1]][result[vID[1]].length - 1];
+                                if (end != 0)
+                                        if ((result[vID[1]].length % 2) == 0 && currentTime >= end && Math.floor(currentTime < totalDuration)) {
+                                                video.currentTime = Math.ceil(totalDuration);
+                                                TotalTimeUpdate(totalDuration - currentTime);
+                                        }
+                        });
+
+
                 }
         });
 

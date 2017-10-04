@@ -1,4 +1,6 @@
 window.onload = function() {
+
+        var currentID = "x";
         chrome.storage.sync.get("totalTime", function(time) {
                 if (time["totalTime"] != undefined)
                         document.getElementById('counter').innerHTML = time["totalTime"];
@@ -10,19 +12,7 @@ window.onload = function() {
 
 
 
-        var checkbox = document.querySelector("input[name=check]");
 
-        checkbox.addEventListener('change', function() {
-                var obj = {};
-                if (this.checked) {
-
-                        obj["on"] = true;
-                        chrome.storage.local.set(obj);
-                } else {
-                        obj["on"] = false;
-                        chrome.storage.local.set(obj);
-                }
-        });
 
 
 
@@ -33,48 +23,113 @@ window.onload = function() {
                 chrome.tabs.sendMessage(tabs[0].id, {
                         greeting: "hello"
                 }, function(response) { //ask for information for this page
-                        var currentID = response.farewell;
-                        document.getElementById('videoID').value = currentID;
+                        try {
+                                currentID = response.farewell;
+                        } catch (err) {}
+                        if (currentID.length != 11) {
+                                document.getElementById('start').style.display = 'none';
+                                document.getElementById('end').style.display = 'none';
+                                document.getElementById('setButton').style.display = 'none';
+                                document.getElementById('icon1').style.display = 'none';
+                                document.getElementById('icon2').style.display = 'none';
+                                document.getElementById('sethr').style.display = 'none';
+                        }
+
+
                         // sync storage before local
                         chrome.storage.sync.get(currentID, function(result) {
-                                var existingTimestamp = result[currentID];
-                                document.getElementById('t').value = existingTimestamp;
-                                if (isNaN(existingTimestamp)) {
+                                var goLocal = true;
+                                try {
+                                        var start = result[currentID][0];
+                                        var end = result[currentID][1];
+
+                                        if (start != undefined && start != "0") {
+                                                goLocal = false;
+                                                document.getElementById('start').value = ToTime(start);
+                                        }
+                                        if (end != undefined && end != "0") {
+                                                document.getElementById('end').value = ToTime(end);
+                                                goLocal = false;
+                                        }
+                                } catch (err) {}
+
+                                if (goLocal) {
                                         chrome.storage.local.get(currentID, function(sresult) {
-                                                document.getElementById('t').value = "0";
-                                                existingTimestamp = sresult[currentID][0];
-                                                if (isNaN(existingTimestamp))
-                                                        existingTimestamp = 0;
-                                                document.getElementById('t').value = existingTimestamp;
+                                                if (isNaN(start))
+                                                        start = 0;
+                                                try {
+                                                        if (start != undefined && start != 0)
+                                                                document.getElementById('start').value = ToTime(String(sresult[currentID][0]));
+                                                } catch (err) {}
+
+                                                try {
+                                                        if ((sresult[currentID].length - 1) % 2 == 1)
+                                                                document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
+                                                } catch (err) {}
 
                                         });
                                 }
 
                         });
+
                 });
         });
 
 
         document.getElementById('setButton').onclick = function() {
-                var ID = document.getElementById("videoID").value;
-                var t = document.getElementById("t").value;
+                var start = ToSeconds(document.getElementById("start").value);
+                var end = ToSeconds(document.getElementById("end").value);
 
-                if (ID.length != 11)
-                        alert("video ID must be 11 characters");
-                else if (isNaN(t))
-                        alert("Number of seconds to skip must be a positive number");
-                else {
-                        var obj = {};
-                        obj[ID] = t;
+                if (currentID.length != 11)
+                        alert("");
+                if (isNaN(start))
+                        start = "0";
+                if (isNaN(end))
+                        end = "0";
 
-                        chrome.storage.sync.set(obj);
-                }
+                var obj = {};
+                var arr = [start, end];
+                obj[currentID] = arr;
+
+                chrome.storage.sync.set(obj);
+
 
 
         };
 
 
 
+        function ToTime(seconds) {
+                if (seconds == "" || seconds == undefined)
+                        return 0;
+                if (parseInt(seconds) < 3600)
+                        return parseInt(Math.floor(seconds / 60)) + ":" + parseInt((seconds % 60) / 10) + parseInt(seconds % 10);
+                else
+                        return parseInt(Math.floor(seconds / 3600)) + ":" + Math.floor((seconds % 3600) / 60) + ":" + parseInt(seconds % 60);
 
+        }
 
+        function ToSeconds(str) {
+                var p = str.split(':'),
+                        s = 0,
+                        m = 1;
+
+                while (p.length > 0) {
+                        s += m * parseInt(p.pop(), 10);
+                        m *= 60;
+                }
+                return s;
+        }
+
+        var checkbox = document.querySelector("input[name=check]");
+        checkbox.addEventListener('change', function() {
+                var obj = {};
+                if (this.checked) {
+                        obj["on"] = true;
+                        chrome.storage.local.set(obj);
+                } else {
+                        obj["on"] = false;
+                        chrome.storage.local.set(obj);
+                }
+        });
 };

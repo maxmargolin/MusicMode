@@ -1,27 +1,29 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/html" style="min-width:200px;">
 <head>
-    <title>Skip hidden ads</title>
+    <title>Set</title>
     <script src="add.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="ps.css">
 </head>
 
-<h3 align="middle">Skip to Actual Video</h3>
+<h3 align="middle" id="headline">Skip to Actual Video</h3>
 <hr>
+<div class = "sets">
 <div class="inputWithIcon">
-    <input type="text" placeholder="Video ID" id="videoID" maxlength="11" required>
-    <i class="fa fa-youtube-play fa-lg fa-fw" aria-hidden="true"></i>
+    <input type="text" placeholder="Start Time" id="start" maxlength="5" autofocus>
+    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon1"></i>
 </div>
 <div class="inputWithIcon">
-    <input type="text" placeholder="Seconds" id="t" maxlength="5" required autofocus>
-    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true"></i>
+    <input type="text" placeholder="End  Time" id="end" maxlength="5">
+    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon2"></i>
 </div>
 <div class="btn">
-<input type="button" id="setButton" value="Set Start Point" align="middle">
+<input type="button" id="setButton" value="Save" align="middle">
 </div>
+</div>
+<hr id="sethr">
 
-<hr>
 <div class="ondisplay">
 
     <section>

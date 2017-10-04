@@ -1,7 +1,10 @@
+
+
+
 chrome.storage.local.get("version", function(result) {
-        currentDBVersion = 8; //change to force update
-        if (!(result["version"][0] === currentDBVersion)) {
-                var db = get_data(currentDBVersion);
+        currentDBVersion = 11; //change to force update
+        if (result==null || result["version"]==null || !(result["version"][0] === currentDBVersion)) {
+            var db = get_data(currentDBVersion);
 
                 //add to local storage
                 for (var i = 0; i < db.length; i++) {
@@ -64,10 +67,9 @@ function process() {
                 chrome.storage.local.get("on", function(result) {
                         if (result["on"]) { //sync storage beforelocal
                                 chrome.storage.sync.get(vID[1], function(result) {
-                                        if (!(result[vID[1]] === undefined || result[vID[1]] == 0)) {
-                                                window.location.replace(location.href + "&t=" + result[vID[1]]); //change url
-
-                                                TotalTimeUpdate(result[vID[1]]);
+                                        if (!(result[vID[1]] == undefined || result[vID[1]][0] == undefined || result[vID[1]][0] == 0)) {
+                                                window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
+                                                TotalTimeUpdate(result[vID[1]][0]);
 
                                         } else {
                                                 chrome.storage.local.get(vID[1], function(result) {
@@ -84,7 +86,6 @@ function process() {
 
 
                         }
-                        $(".date style-scope ytd-video-secondary-info-renderer").text("Hello world!");
 
                 });
 
