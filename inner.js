@@ -22,7 +22,9 @@ function InSkipper() {
                                         }
                                 }
 
-                                if ((result[vID[1]].length % 2) == 0 && currentTime >= result[vID[1]][result[vID[1]].length - 1] && Math.floor(currentTime < totalDuration)) {
+
+                                var endpoint = result[vID[1]][result[vID[1]].length - 1];
+                                if ((result[vID[1]].length % 2) == 0 && currentTime >= endpoint && endpoint != 0 && Math.floor(currentTime < totalDuration)) {
                                         video.currentTime = Math.ceil(totalDuration);
                                         TotalTimeUpdate(totalDuration - currentTime);
                                 }
