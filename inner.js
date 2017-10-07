@@ -9,7 +9,6 @@ function InSkipper() {
                         let video = document.querySelector("video.html5-main-video");
                         let currentTime = video.currentTime; // Fractional, in seconds
                         let totalDuration = video.duration;
-                        //video.currentTime+=100;
                         var vID = location.href.match(/v\=(.{11})/);
 
 
