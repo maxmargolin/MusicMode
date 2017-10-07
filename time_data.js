@@ -233,7 +233,11 @@ function get_data(database_version) {
                 ["WrsFXgQk5UI", 30, 212],
                 ["t5Sd5c4o9UM", 30],
                 ["_JQiEs32SqQ", 30],
+<<<<<<< HEAD
                 ["ANS9sSJA9Yc", 32,177,211,300],
+=======
+                ["ANS9sSJA9Yc", 32,177,300],
+>>>>>>> 7d44a1f2376019c559386ed66090d7e95cdea234
                 ["kTHNpusq654", 32],
                 ["foE1mO2yM04", 32],
                 ["yNPECkESPbU", 33],
