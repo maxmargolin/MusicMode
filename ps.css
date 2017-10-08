@@ -8,10 +8,6 @@
 }
 
 
-body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-}
 
 
 input[type=text]{
@@ -152,4 +148,25 @@ input[type=text]:focus{
 }
 .slideThree input[type=checkbox]:checked + label {
     left: 43px;
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+  background-color: #ecf0f1;
+  color: #34495e;
+  font-family: Trebuchet, Arial, sans-serif;
+  text-align: center;
+}
+
+h2 {
+  font-weight: normal;
 }
