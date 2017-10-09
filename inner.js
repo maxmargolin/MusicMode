@@ -1,18 +1,33 @@
-setInterval(InSkipper, 500);
+setInterval(InSkipper, 400);
 
 
 
 
 function InSkipper() {
+
         chrome.storage.local.get("on", function(result) {
                 if (result["on"]) {
+                        var link = String(document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0]);
+                        var vID = link.match(/v\=(.{11})/);
                         let video = document.querySelector("video.html5-main-video");
                         let currentTime = video.currentTime; // Fractional, in seconds
                         let totalDuration = video.duration;
-                        var vID = location.href.match(/v\=(.{11})/);
+                        //var vID = location.href.match(/v\=(.{11})/);
 
-
+                        var localStart = true;
+                        var localEnd = true;
                         chrome.storage.sync.get(vID[1], function(result) {
+
+                                var startpoint = result[vID[1]][0];
+                                //no need for local start point
+                                if (startpoint > 0)
+                                        localStart = false;
+                                //safety
+                                if (startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
+                                        TotalTimeUpdate(startpoint - currentTime);
+                                        video.currentTime = startpoint;
+                                }
+
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
                                         if (inSkipRange(currentTime, skipTime)) {
@@ -23,14 +38,26 @@ function InSkipper() {
 
 
                                 var endpoint = result[vID[1]][result[vID[1]].length - 1];
+                                if (endpoint > 0)
+                                        localEnd = false;
                                 if ((result[vID[1]].length % 2) == 0 && currentTime >= endpoint && endpoint != 0 && Math.floor(currentTime < totalDuration)) {
                                         video.currentTime = Math.ceil(totalDuration);
                                         TotalTimeUpdate(totalDuration - currentTime);
                                 }
                         });
 
-
+                        //local
                         chrome.storage.local.get(vID[1], function(result) {
+
+                                var lstartpoint = result[vID[1]][0];
+                                //safety
+                                if (localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
+                                        TotalTimeUpdate(lstartpoint - currentTime);
+                                        video.currentTime = lstartpoint;
+
+                                }
+
+
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
                                         if (inSkipRange(currentTime, skipTime)) {
@@ -40,7 +67,7 @@ function InSkipper() {
                                 }
 
                                 var end = result[vID[1]][result[vID[1]].length - 1];
-                                if (end != 0)
+                                if (localEnd && end != 0)
                                         if ((result[vID[1]].length % 2) == 0 && currentTime >= end && Math.floor(currentTime < totalDuration)) {
                                                 video.currentTime = Math.ceil(totalDuration);
                                                 TotalTimeUpdate(totalDuration - currentTime);
