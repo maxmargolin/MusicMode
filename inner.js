@@ -1,4 +1,4 @@
-setInterval(InSkipper, 400);
+setInterval(InSkipper, 500);
 
 
 
@@ -23,7 +23,7 @@ function InSkipper() {
                                 if (startpoint > 0)
                                         localStart = false;
                                 //safety
-                                if (startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
+                                if (currentTime>0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
                                         TotalTimeUpdate(startpoint - currentTime);
                                         video.currentTime = startpoint;
                                 }
@@ -51,7 +51,7 @@ function InSkipper() {
 
                                 var lstartpoint = result[vID[1]][0];
                                 //safety
-                                if (localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
+                                if (currentTime>0.1 && localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
                                         TotalTimeUpdate(lstartpoint - currentTime);
                                         video.currentTime = lstartpoint;
 

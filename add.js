@@ -1,20 +1,8 @@
 window.onload = function() {
 
+
+
         var currentID = "x";
-        chrome.storage.sync.get("totalTime", function(time) {
-                if (time["totalTime"] != undefined)
-                        document.getElementById('counter').innerHTML = time["totalTime"];
-        });
-
-        chrome.storage.local.get("on", function(result) {
-                document.getElementById("slideThree").checked = result["on"];
-        });
-
-
-
-
-
-
 
         chrome.tabs.query({
                 active: true,
@@ -101,6 +89,16 @@ window.onload = function() {
 
 
         };
+
+
+        chrome.storage.sync.get("totalTime", function(time) {
+                if (time["totalTime"] != undefined)
+                        document.getElementById('counter').innerHTML = time["totalTime"];
+        });
+
+        chrome.storage.local.get("on", function(result) {
+                document.getElementById("slideThree").checked = result["on"];
+        });
 
 
 
