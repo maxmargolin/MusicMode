@@ -14,13 +14,13 @@ window.onload = function() {
                         try {
                                 currentID = response.farewell;
                         } catch (err) {}
-                        if (currentID.length != 11) {
-                                document.getElementById('start').style.display = 'none';
-                                document.getElementById('end').style.display = 'none';
-                                document.getElementById('setButton').style.display = 'none';
-                                document.getElementById('icon1').style.display = 'none';
-                                document.getElementById('icon2').style.display = 'none';
-                                document.getElementById('sethr').style.display = 'none';
+                        if (currentID.length !== 11) {
+                                document.getElementById('start').style.display = "none";
+                                document.getElementById('end').style.display = "none";
+                                document.getElementById('setButton').style.display = "none";
+                                document.getElementById('icon1').style.display = "none";
+                                document.getElementById('icon2').style.display = "none";
+                                document.getElementById('sethr').style.display = "none";
                         }
 
 
