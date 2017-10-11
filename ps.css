@@ -119,3 +119,7 @@ input[type=text]:focus{
 .slideThree input[type=checkbox]:checked + label {
     left: 43px;
 }
+
+#a,#b,#c,#d {
+  width: 47%;
+}

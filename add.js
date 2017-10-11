@@ -42,9 +42,33 @@ window.onload = function() {
                                         }
                                 } catch (err) {}
 
-                                if (localStart || localEnd) {
+                              //  if (localStart || localEnd) {
                                         chrome.storage.local.get(currentID, function(sresult) {
 
+
+                                                if (sresult[currentID] != undefined && sresult[currentID].length > 2) {
+                                                        var index = 1;
+                                                        while (index < sresult[currentID].length-1) {
+                                                                var a = document.createElement("input");
+                                                                a.setAttribute("type", "text");
+                                                                a.setAttribute("placeholder", ToTime(sresult[currentID][index]));
+                                                                a.setAttribute("id", "a");
+                                                                a.setAttribute("disabled", "true");
+                                                                var b = document.createElement("input");
+                                                                b.setAttribute("type", "text");
+                                                                b.setAttribute("placeholder", ToTime(sresult[currentID][index+1]));
+                                                                b.setAttribute("id", "b");
+                                                                b.setAttribute("disabled", "true");
+                                                                var element = document.getElementById("extra");
+                                                                element.appendChild(a);
+                                                                var arrow = document.createElement("i");
+                                                                arrow.setAttribute("class", "fa fa-arrow-right");
+                                                                arrow.setAttribute("aria-hidden", "true");
+                                                                element.appendChild(arrow)
+                                                                element.appendChild(b);
+                                                                index += 2;
+                                                        }
+                                                }
 
                                                 if (localStart) {
                                                         try {
@@ -60,7 +84,7 @@ window.onload = function() {
                                                         } catch (err) {}
                                                 }
                                         });
-                                }
+                              //  }
                         });
                 });
         });
