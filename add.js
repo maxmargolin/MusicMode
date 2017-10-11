@@ -59,15 +59,11 @@ window.onload = function() {
                                                                         document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
                                                         } catch (err) {}
                                                 }
-
                                         });
                                 }
-
                         });
-
                 });
         });
-
 
         document.getElementById('setButton').onclick = function() {
                 var start = ToSeconds(document.getElementById("start").value);
@@ -85,9 +81,6 @@ window.onload = function() {
                 obj[currentID] = arr;
 
                 chrome.storage.sync.set(obj);
-
-
-
         };
 
 
@@ -99,8 +92,6 @@ window.onload = function() {
         chrome.storage.local.get("on", function(result) {
                 document.getElementById("slideThree").checked = result["on"];
         });
-
-
 
         function ToTime(seconds) {
                 if (seconds == "" || seconds == undefined)
