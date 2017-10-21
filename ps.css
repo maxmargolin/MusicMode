@@ -123,3 +123,34 @@ input[type=text]:focus{
 #a,#b,#c,#d {
   width: 47%;
 }
+
+
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    cursor: pointer;
+}
+
+
+#expand2 img {
+width: 35px;
+padding: 5px;
+border: 0;
+box-shadow: 0;
+display: inline;
+}
+
+
+
+a:visited{
+  color:black;
+}
+
+a:visited{
+  color:black;
+}
