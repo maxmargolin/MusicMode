@@ -2,7 +2,7 @@
 
 
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 27; //change to force update
+        var currentDBVersion = 32; //change to force update
         if (result==null || result["version"]==null || result["version"][0] != currentDBVersion) {
             var db = get_data(currentDBVersion);
 
@@ -16,8 +16,6 @@ chrome.storage.local.get("version", function(result) {
 
         }
 });
-
-
 
 //begin counting total
 chrome.storage.sync.get("totalTime", function(time) {

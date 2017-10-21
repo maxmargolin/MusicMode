@@ -1,9 +1,20 @@
 window.onload = function() {
 
+        document.getElementById("more").addEventListener("click", show);
+        function show() {
 
+                if (document.getElementById("expand1").style.display != "block")
+                        document.getElementById("expand1").style.display = "block";
+                else if(document.getElementById("expand2").style.display != "block"){
+                        document.getElementById("expand2").style.display = "block";
+                }
+                else {
+                  document.getElementById("expand3").style.display = "block";
+                  document.getElementById("more").style.display = "none"
+                }
+        }
 
         var currentID = "x";
-
         chrome.tabs.query({
                 active: true,
                 currentWindow: true
@@ -42,49 +53,49 @@ window.onload = function() {
                                         }
                                 } catch (err) {}
 
-                              //  if (localStart || localEnd) {
-                                        chrome.storage.local.get(currentID, function(sresult) {
+                                //  if (localStart || localEnd) {
+                                chrome.storage.local.get(currentID, function(sresult) {
 
 
-                                                if (sresult[currentID] != undefined && sresult[currentID].length > 2) {
-                                                        var index = 1;
-                                                        while (index < sresult[currentID].length-1) {
-                                                                var a = document.createElement("input");
-                                                                a.setAttribute("type", "text");
-                                                                a.setAttribute("placeholder", ToTime(sresult[currentID][index]));
-                                                                a.setAttribute("id", "a");
-                                                                a.setAttribute("disabled", "true");
-                                                                var b = document.createElement("input");
-                                                                b.setAttribute("type", "text");
-                                                                b.setAttribute("placeholder", ToTime(sresult[currentID][index+1]));
-                                                                b.setAttribute("id", "b");
-                                                                b.setAttribute("disabled", "true");
-                                                                var element = document.getElementById("extra");
-                                                                element.appendChild(a);
-                                                                var arrow = document.createElement("i");
-                                                                arrow.setAttribute("class", "fa fa-arrow-right");
-                                                                arrow.setAttribute("aria-hidden", "true");
-                                                                element.appendChild(arrow)
-                                                                element.appendChild(b);
-                                                                index += 2;
-                                                        }
+                                        if (sresult[currentID] != undefined && sresult[currentID].length > 2) {
+                                                var index = 1;
+                                                while (index < sresult[currentID].length - 1) {
+                                                        var a = document.createElement("input");
+                                                        a.setAttribute("type", "text");
+                                                        a.setAttribute("placeholder", ToTime(sresult[currentID][index]));
+                                                        a.setAttribute("id", "a");
+                                                        a.setAttribute("disabled", "true");
+                                                        var b = document.createElement("input");
+                                                        b.setAttribute("type", "text");
+                                                        b.setAttribute("placeholder", ToTime(sresult[currentID][index + 1]));
+                                                        b.setAttribute("id", "b");
+                                                        b.setAttribute("disabled", "true");
+                                                        var element = document.getElementById("extra");
+                                                        element.appendChild(a);
+                                                        var arrow = document.createElement("i");
+                                                        arrow.setAttribute("class", "fa fa-arrow-right");
+                                                        arrow.setAttribute("aria-hidden", "true");
+                                                        element.appendChild(arrow)
+                                                        element.appendChild(b);
+                                                        index += 2;
                                                 }
+                                        }
 
-                                                if (localStart) {
-                                                        try {
-                                                                var start = sresult[currentID][0];
-                                                                if (start != undefined && start != 0)
-                                                                        document.getElementById('start').value = ToTime(String(start));
-                                                        } catch (err) {}
-                                                }
-                                                if (localEnd) {
-                                                        try {
-                                                                if ((sresult[currentID].length - 1) % 2 == 1)
-                                                                        document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
-                                                        } catch (err) {}
-                                                }
-                                        });
-                              //  }
+                                        if (localStart) {
+                                                try {
+                                                        var start = sresult[currentID][0];
+                                                        if (start != undefined && start != 0)
+                                                                document.getElementById('start').value = ToTime(String(start));
+                                                } catch (err) {}
+                                        }
+                                        if (localEnd) {
+                                                try {
+                                                        if ((sresult[currentID].length - 1) % 2 == 1)
+                                                                document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
+                                                } catch (err) {}
+                                        }
+                                });
+                                //  }
                         });
                 });
         });
@@ -109,9 +120,14 @@ window.onload = function() {
 
 
         chrome.storage.sync.get("totalTime", function(time) {
-                if (time["totalTime"] != undefined)
+                if (time["totalTime"] != undefined) {
                         document.getElementById('counter').innerHTML = time["totalTime"];
+                        document.getElementById("fb").setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=bit.ly/chromeskipper&quote=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!");
+                        document.getElementById("tw").setAttribute("href", "https://twitter.com/intent/tweet?text=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!%20http://bit.ly/chromeskipper");
+                        document.getElementById("email").setAttribute("href", "mailto:?Subject=This%20Chrome%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!&Body='Skipper%20-%20Music%20Mode%20For%20YouTube'%20%20skips%20to%20the%20actual%20song/video%20for%20you,%20You%20should%20Check%20it%20out:%20%20https://chrome.google.com/webstore/detail/skipper-music-mode-for-yo/chojffponkoboggmjpnkflkbcelacijk");
+                }
         });
+
 
         chrome.storage.local.get("on", function(result) {
                 document.getElementById("slideThree").checked = result["on"];
