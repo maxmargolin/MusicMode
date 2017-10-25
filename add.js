@@ -1,16 +1,16 @@
 window.onload = function() {
 
         document.getElementById("more").addEventListener("click", show);
+
         function show() {
 
                 if (document.getElementById("expand1").style.display != "block")
                         document.getElementById("expand1").style.display = "block";
-                else if(document.getElementById("expand2").style.display != "block"){
+                else if (document.getElementById("expand2").style.display != "block") {
                         document.getElementById("expand2").style.display = "block";
-                }
-                else {
-                  document.getElementById("expand3").style.display = "block";
-                  document.getElementById("more").style.display = "none"
+                } else {
+                        document.getElementById("expand3").style.display = "block";
+                        document.getElementById("more").style.display = "none"
                 }
         }
 
@@ -20,7 +20,7 @@ window.onload = function() {
                 currentWindow: true
         }, function(tabs) {
                 chrome.tabs.sendMessage(tabs[0].id, {
-                        greeting: "hello"
+                        req: "id"
                 }, function(response) { //ask for information for this page
                         try {
                                 currentID = response.farewell;
@@ -100,30 +100,14 @@ window.onload = function() {
                 });
         });
 
-        document.getElementById('setButton').onclick = function() {
-                var start = ToSeconds(document.getElementById("start").value);
-                var end = ToSeconds(document.getElementById("end").value);
 
-                if (currentID.length != 11)
-                        alert("");
-                if (isNaN(start))
-                        start = "0";
-                if (isNaN(end))
-                        end = "0";
-
-                var obj = {};
-                var arr = [start, end];
-                obj[currentID] = arr;
-
-                chrome.storage.sync.set(obj);
-        };
 
 
         chrome.storage.sync.get("totalTime", function(time) {
                 if (time["totalTime"] != undefined) {
                         document.getElementById('counter').innerHTML = time["totalTime"];
-                        document.getElementById("fb").setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=bit.ly/chromeskipper&quote=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!");
-                        document.getElementById("tw").setAttribute("href", "https://twitter.com/intent/tweet?text=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!%20http://bit.ly/chromeskipper");
+                        document.getElementById("fb").setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=bit.ly/skippershare&quote=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!");
+                        document.getElementById("tw").setAttribute("href", "https://twitter.com/intent/tweet?text=This%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!%20http://bit.ly/skippershare");
                         document.getElementById("email").setAttribute("href", "mailto:?Subject=This%20Chrome%20extension%20already%20saved%20me%20" + time["totalTime"] + "%20seconds!&Body='Skipper%20-%20Music%20Mode%20For%20YouTube'%20%20skips%20to%20the%20actual%20song/video%20for%20you,%20You%20should%20Check%20it%20out:%20%20https://chrome.google.com/webstore/detail/skipper-music-mode-for-yo/chojffponkoboggmjpnkflkbcelacijk");
                 }
         });
@@ -166,4 +150,52 @@ window.onload = function() {
                         chrome.storage.local.set(obj);
                 }
         });
+
+
+
+        //where to send
+        try {
+                var config = {
+                        apiKey: "AIzaSyCwUoS6G3piAXhtrs9Cp1TzVfIPxeOg9vI",
+                        authDomain: "skipper-63ddb.firebaseapp.com",
+                        databaseURL: "https://skipper-63ddb.firebaseio.com",
+                        projectId: "skipper-63ddb",
+                        storageBucket: "skipper-63ddb.appspot.com",
+                        messagingSenderId: "13095823735"
+                };
+                //get ready
+                firebase.initializeApp(config);
+        } catch (err) {}
+
+        document.getElementById('setButton').onclick = function() {
+                var start = ToSeconds(document.getElementById("start").value);
+                var end = ToSeconds(document.getElementById("end").value);
+
+                if (currentID.length != 11)
+                ;
+                if (isNaN(start))
+                        start = 0;
+                if (isNaN(end))
+                        end = 0;
+
+                var obj = {};
+                var arr = [start, end];
+                obj[currentID] = arr;
+
+                chrome.storage.sync.set(obj);
+
+
+
+                //send
+                try {
+                        firebase.database().ref(currentID).set({
+                                s: start,
+                                e: end
+                        });
+                } catch (err) {}
+
+
+        };
+
+
 };
