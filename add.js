@@ -1,5 +1,6 @@
 window.onload = function() {
-
+        var start = 0;
+        var end = 0;
         document.getElementById("more").addEventListener("click", show);
 
         function show() {
@@ -40,8 +41,8 @@ window.onload = function() {
                                 var localEnd = true;
                                 var localStart = true;
                                 try {
-                                        var start = result[currentID][0];
-                                        var end = result[currentID][1];
+                                        start = result[currentID][0];
+                                        end = result[currentID][1];
 
                                         if (start != undefined && start != "0") {
                                                 localStart = false;
@@ -153,6 +154,29 @@ window.onload = function() {
 
 
 
+
+
+
+        //save button
+        (function() {
+                var removeSuccess;
+
+                removeSuccess = function() {
+                        return $('.button').removeClass('success');
+                };
+
+                $(document).ready(function() {
+                        return $('.button').click(function() {
+                                $(this).addClass('success');
+                                return setTimeout(removeSuccess, 1000);
+                        });
+                });
+
+        }).call(this);
+
+
+
+
         //where to send
         try {
                 var config = {
@@ -168,18 +192,18 @@ window.onload = function() {
         } catch (err) {}
 
         document.getElementById('setButton').onclick = function() {
-                var start = ToSeconds(document.getElementById("start").value);
-                var end = ToSeconds(document.getElementById("end").value);
+                var newStart = ToSeconds(document.getElementById("start").value);
+                var newEnd = ToSeconds(document.getElementById("end").value);
 
                 if (currentID.length != 11)
                 ;
-                if (isNaN(start))
-                        start = 0;
-                if (isNaN(end))
-                        end = 0;
+                if (isNaN(newStart))
+                        newStart = 0;
+                if (isNaN(newEnd))
+                        newEnd = 0;
 
                 var obj = {};
-                var arr = [start, end];
+                var arr = [newStart, newEnd];
                 obj[currentID] = arr;
 
                 chrome.storage.sync.set(obj);
@@ -187,12 +211,13 @@ window.onload = function() {
 
 
                 //send
-                try {
-                        firebase.database().ref(currentID).set({
-                                s: start,
-                                e: end
-                        });
-                } catch (err) {}
+                if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end))
+                        try {
+                                firebase.database().ref(currentID).set({
+                                        a: newStart,
+                                        z: newEnd
+                                });
+                        } catch (err) {}
 
 
         };

@@ -3,6 +3,7 @@
 <head>
   <title>Skipper</title>
   <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js" async></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="add.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="ps.css">
@@ -24,10 +25,14 @@
     <input type="text" placeholder="End  Time" id="end" maxlength="5">
     <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon2"></i>
   </div>
-  <div class="btn">
-    <input type="button" id="setButton" value="Save" align="middle">
-  </div>
-</div>
+  <a class="button" href="#" id="setButton" role="button">
+	<span>Save</span>
+	<div class="icon">
+		<i class="fa fa-floppy-o"></i>
+		<i class="fa fa-check"></i>
+	</div>
+</a>
+
 <hr id="sethr">
 <div class="ondisplay">
   <section>
