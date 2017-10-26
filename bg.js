@@ -1,7 +1,7 @@
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 33; //change to force update
-        if (result==null || result["version"]==null || result["version"][0] != currentDBVersion) {
-            var db = get_data(currentDBVersion);
+        var currentDBVersion = 35; //change to force update
+        if (result == null || result["version"] == null || result["version"][0] != currentDBVersion) {
+                var db = get_data(currentDBVersion);
 
                 //add to local storage
                 for (var i = 0; i < db.length; i++) {
@@ -37,15 +37,15 @@ window.addEventListener("load", process); // one-time late postprocessing
 //popup is requesting id
 chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
-          //popup is requesting id
-          if (request.req == "id") {
-                  var curl = location.href;
-                  var vID = curl.match(/v\=(.{11})/);
-                  sendResponse({
-                          farewell: vID[1]
-                  });
+                //popup is requesting id
+                if (request.req == "id") {
+                        var curl = location.href;
+                        var vID = curl.match(/v\=(.{11})/);
+                        sendResponse({
+                                farewell: vID[1]
+                        });
 
-          }
+                }
 
         });
 

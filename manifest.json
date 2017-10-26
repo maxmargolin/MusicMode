@@ -1,29 +1,28 @@
 {
-	"manifest_version": 2,
-	"name": "Skipper - Music Mode for YouTube™",
-	"short_name": "Skipper",
-	"description": "AutoSkip to the actual song or video on YouTube™!",
-	"content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
-	"version": "0.5.8",
-	"browser_action": {
-		"default_icon": "icon.png",
-		"default_popup": "popup.html",
-		"default_title": "Skipper"
-	},
-	"content_scripts": [
-		{
-		"js": ["time_data.js","bg.js","inner.js"],
-		"matches": ["*://*.youtube.com/*"],
+  "manifest_version": 2,
+  "name": "Skipper - Music Mode for YouTube™",
+  "short_name": "Skipper",
+  "description": "AutoSkip to the actual song or video on YouTube™!",
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.googleapis.com https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
+  "version": "0.5.9",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Skipper"
+  },
+  "content_scripts": [{
+    "js": ["time_data.js", "bg.js", "inner.js"],
+    "matches": ["*://*.youtube.com/*"],
     "run_at": "document_start"
-	}],
-	"icons": {
+  }],
+  "icons": {
     "48": "icon48.png",
     "128": "icon.png"
   },
-	"permissions": [
-		"activeTab",
-		"tabs",
-		"storage",
-		"webNavigation"
-	]
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "webNavigation"
+  ]
 }
