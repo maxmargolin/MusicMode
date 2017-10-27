@@ -215,17 +215,45 @@ window.onload = function() {
 
 
 
-                //send
-                if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end))
-                        try {
-                                firebase.database().ref(currentID).set({
-                                        userT: tt,
-                                        a: newStart,
-                                        z: newEnd
-                                });
-                        } catch (err) {}
+                //stats
+                var saves = 0;
+                var rates = 0;
+                chrome.storage.sync.get("SaveCount", function(result) {
+                        saves = result["SaveCount"] + 1;
+                        var toPush = {};
+                        toPush["SaveCount"] = saves;
+                        chrome.storage.sync.set(toPush);
 
 
+                });
+                chrome.storage.sync.get("RateCount", function(result) {
+                        rates = result["RateCount"];
+                        //send
+                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end))
+                                try {
+                                        firebase.database().ref(currentID).set({
+                                                a: newStart,
+                                                z: newEnd,
+                                                sCount: saves,
+                                                rCount: rates,
+                                                userTT: tt
+                                        });
+                                } catch (err) {}
+                });
+
+
+
+        };
+
+        document.getElementById('rate').onclick = function() {
+                chrome.storage.sync.get("RateCount", function(result) {
+                        var rated = result["RateCount"] + 1;
+                        var toPush = {};
+                        toPush["RateCount"] = rated;
+                        chrome.storage.sync.set(toPush);
+
+
+                });
         };
 
 

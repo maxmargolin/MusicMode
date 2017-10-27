@@ -1,7 +1,6 @@
 function get_data(database_version) {
         return [
                 ["version", database_version], // mark version in storage
-                ["on", true],
 
                 //Video id and start point
                 ["gBRi6aZJGj4", 0, 180], //Video is from 0 to 180
@@ -127,6 +126,7 @@ function get_data(database_version) {
                 ["fyaI4-5849w", 8],
                 ["cedoBlUvBlI", 8],
                 ["i1Jp-V4jalI", 8],
+                ["liwCttfeJ7E",8,204],
                 ["XsFneCExrCQ", 8, 170, 189],
                 ["rQ7tMWOCQlM", 8],
                 ["gl2p4G3CUrI", 8],
@@ -213,6 +213,7 @@ function get_data(database_version) {
                 ["3gOHvDP_vCs", 17],
                 ["mytLRy32Viw", 17],
                 ["PbW14E2eHJ0", 17],
+                ["9XDtAgB9mQU",17],
                 ["WUcXQ--yGWQ", 17],
                 ["TdrL3QxjyVw", 17],
                 ["jhC1pI76Rqo", 17],

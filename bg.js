@@ -14,11 +14,39 @@ chrome.storage.local.get("version", function(result) {
         }
 });
 
+
+//initial on
+chrome.storage.local.get("on", function(on) {
+        if (on["on"] != false) {
+                var obj = {};
+                obj["on"] = true;
+                chrome.storage.local.set(obj);
+        }
+});
+
 //begin counting total
 chrome.storage.sync.get("totalTime", function(time) {
         if (time["totalTime"] == undefined) {
                 var obj = {};
                 obj["totalTime"] = 0;
+                chrome.storage.sync.set(obj);
+        }
+});
+//times clicked save
+chrome.storage.sync.get("SaveCount", function(c1) {
+
+        if (c1["SaveCount"] == undefined) {
+                var obj = {};
+                obj["SaveCount"] = 0;
+                chrome.storage.sync.set(obj);
+        }
+});
+
+//times clicked rate
+chrome.storage.sync.get("RateCount", function(c2) {
+        if (c2["RateCount"] == undefined) {
+                var obj = {};
+                obj["RateCount"] = 0;
                 chrome.storage.sync.set(obj);
         }
 });
