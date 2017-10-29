@@ -113,6 +113,7 @@ input[type=text]:focus {
 
 #a, #b, #c, #d {
   width: 47%;
+  background-color: #F0F0F0;
 }
 
 .down {
