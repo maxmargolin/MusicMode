@@ -28,14 +28,16 @@ window.onload = function() {
                         chrome.storage.sync.get(currentID, function(result) {
                                 var localEnd = true;
                                 var localStart = true;
+                                var localInner = true;
                                 try {
                                         start = result[currentID][0];
-                                        end = result[currentID][1];
+                                        end = result[currentID][result[currentID].length - 1];
 
                                         if (start != undefined && start != "0") {
                                                 localStart = false;
                                                 document.getElementById('start').value = ToTime(start);
                                         }
+                                        localInner = !(ShowInnerSkips(result[currentID]));
                                         if (end != undefined && end != "0") {
                                                 document.getElementById('end').value = ToTime(end);
                                                 localEnd = false;
@@ -46,28 +48,8 @@ window.onload = function() {
                                 chrome.storage.local.get(currentID, function(sresult) {
 
 
-                                        if (sresult[currentID] != undefined && sresult[currentID].length > 2) {
-                                                var index = 1;
-                                                while (index < sresult[currentID].length - 1) {
-                                                        var a = document.createElement("input");
-                                                        a.setAttribute("type", "text");
-                                                        a.setAttribute("placeholder", ToTime(sresult[currentID][index]));
-                                                        a.setAttribute("id", "a");
-                                                        a.setAttribute("disabled", "true");
-                                                        var b = document.createElement("input");
-                                                        b.setAttribute("type", "text");
-                                                        b.setAttribute("placeholder", ToTime(sresult[currentID][index + 1]));
-                                                        b.setAttribute("id", "b");
-                                                        b.setAttribute("disabled", "true");
-                                                        var element = document.getElementById("extra");
-                                                        element.appendChild(a);
-                                                        var arrow = document.createElement("i");
-                                                        arrow.setAttribute("class", "fa fa-arrow-right");
-                                                        arrow.setAttribute("aria-hidden", "true");
-                                                        element.appendChild(arrow)
-                                                        element.appendChild(b);
-                                                        index += 2;
-                                                }
+                                        if (localInner && sresult[currentID] != undefined && sresult[currentID].length > 2) {
+                                                ShowInnerSkips(sresult[currentID]);
                                         }
 
                                         if (localStart) {
@@ -91,14 +73,44 @@ window.onload = function() {
 
 
 
+        function ShowInnerSkips(times) {
+                var index = 1;
+                var syncSkiperFound = false;
+                while (index < times.length - 1) {
+                    //    if (times[index] != 0 && times[index + 1] != 0) {
+                                syncSkiperFound = true;
+                                var a = document.createElement("input");
+                                a.setAttribute("type", "text");
+                                //a.setAttribute("placeholder", ToTime(times[index]));
+                                a.value = ToTime(times[index]);
+                                a.setAttribute("id", String.fromCharCode(96 + index));
+                                //    a.setAttribute("disabled", "true");
+                                var b = document.createElement("input");
+                                b.setAttribute("type", "text");
+                                b.value = ToTime(times[index + 1]);
+                                b.setAttribute("id", String.fromCharCode(97 + index));
+                                //  b.setAttribute("disabled", "true");
+                                var element = document.getElementById("extra");
+                                element.appendChild(a);
+                                var arrow = document.createElement("i");
+                                arrow.setAttribute("class", "fa fa-arrow-right");
+                                arrow.setAttribute("aria-hidden", "true");
+                                element.appendChild(arrow)
+                                element.appendChild(b);
+                      //  }
+                        index += 2;
+                }
+                return syncSkiperFound;
+        }
+
+
+
         var tt = "0";
         document.getElementById("more").addEventListener("click", show);
 
         function show() {
 
-                if (document.getElementById("expand1").style.display != "block")
-                        document.getElementById("expand1").style.display = "block";
-                else if (document.getElementById("expand2").style.display != "block") {
+                if (document.getElementById("expand2").style.display != "block") {
                         document.getElementById("expand2").style.display = "block";
                 } else {
                         document.getElementById("expand3").style.display = "block";
@@ -199,6 +211,16 @@ window.onload = function() {
         document.getElementById('setButton').onclick = function() {
                 var newStart = ToSeconds(document.getElementById("start").value);
                 var newEnd = ToSeconds(document.getElementById("end").value);
+                var pointA = 0;
+                var pointB = 0;
+                var pointC = 0;
+                var pointD = 0;
+                try {
+                        pointA = ToSeconds(document.getElementById("a").value);
+                        pointB = ToSeconds(document.getElementById("b").value);
+                        pointC = ToSeconds(document.getElementById("c").value);
+                        pointD = ToSeconds(document.getElementById("d").value);
+                } catch (err) {}
 
                 if (currentID.length != 11)
                 ;
@@ -208,8 +230,9 @@ window.onload = function() {
                         newEnd = 0;
 
                 var obj = {};
-                var arr = [newStart, newEnd];
+                var arr = [newStart, pointA, pointB, pointC, pointD, newEnd];
                 obj[currentID] = arr;
+                alert("pushed" + arr);
 
                 chrome.storage.sync.set(obj);
 
@@ -232,8 +255,7 @@ window.onload = function() {
                         if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end))
                                 try {
                                         firebase.database().ref(currentID).set({
-                                                a: newStart,
-                                                z: newEnd,
+                                                times: arr,
                                                 sCount: saves,
                                                 rCount: rates,
                                                 userTT: tt

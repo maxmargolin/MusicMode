@@ -16,23 +16,28 @@ function InSkipper() {
 
                         var localStart = true;
                         var localEnd = true;
+                        var localMid = true;
                         chrome.storage.sync.get(vID[1], function(result) {
+
 
                                 var startpoint = result[vID[1]][0];
                                 //no need for local start point
                                 if (startpoint > 0)
                                         localStart = false;
                                 //safety
-                                if (currentTime>0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
+                                if (currentTime > 0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
                                         TotalTimeUpdate(startpoint - currentTime);
                                         video.currentTime = startpoint;
                                 }
 
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
-                                        if (inSkipRange(currentTime, skipTime)) {
-                                                video.currentTime = result[vID[1]][i + 1];
-                                                TotalTimeUpdate(result[vID[1]][i + 1] - currentTime);
+                                        if ((result[vID[1]][i + 1] - result[vID[1]][i]) > 3) {
+                                                localMid = false;
+                                                if (inSkipRange(currentTime, skipTime)) {
+                                                        video.currentTime = result[vID[1]][i + 1];
+                                                        TotalTimeUpdate(result[vID[1]][i + 1] - currentTime);
+                                                }
                                         }
                                 }
 
@@ -51,18 +56,19 @@ function InSkipper() {
 
                                 var lstartpoint = result[vID[1]][0];
                                 //safety
-                                if (currentTime>0.1 && localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
+                                if (currentTime > 0.1 && localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
                                         TotalTimeUpdate(lstartpoint - currentTime);
                                         video.currentTime = lstartpoint;
 
                                 }
 
-
-                                for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
-                                        var skipTime = result[vID[1]][i];
-                                        if (inSkipRange(currentTime, skipTime)) {
-                                                video.currentTime = result[vID[1]][i + 1];
-                                                TotalTimeUpdate(result[vID[1]][i + 1] - currentTime);
+                                if (localMid) {
+                                        for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
+                                                var skipTime = result[vID[1]][i];
+                                                if (inSkipRange(currentTime, skipTime)) {
+                                                        video.currentTime = result[vID[1]][i + 1];
+                                                        TotalTimeUpdate(result[vID[1]][i + 1] - currentTime);
+                                                }
                                         }
                                 }
 
