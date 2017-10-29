@@ -48,7 +48,7 @@ window.onload = function() {
                                 chrome.storage.local.get(currentID, function(sresult) {
 
 
-                                        if (localInner && sresult[currentID] != undefined && sresult[currentID].length > 2) {
+                                        if (localInner && (sresult[currentID] != undefined && sresult[currentID].length > 2)) {
                                                 ShowInnerSkips(sresult[currentID]);
                                         }
 
@@ -77,7 +77,7 @@ window.onload = function() {
                 var index = 1;
                 var syncSkiperFound = false;
                 while (index < times.length - 1) {
-                    //    if (times[index] != 0 && times[index + 1] != 0) {
+                        if (times[index] > 0 && times[index + 1] > 0) {
                                 syncSkiperFound = true;
                                 var a = document.createElement("input");
                                 a.setAttribute("type", "text");
@@ -97,7 +97,7 @@ window.onload = function() {
                                 arrow.setAttribute("aria-hidden", "true");
                                 element.appendChild(arrow)
                                 element.appendChild(b);
-                      //  }
+                        }
                         index += 2;
                 }
                 return syncSkiperFound;
