@@ -4,7 +4,7 @@
   "short_name": "Skipper",
   "description": "AutoSkip to the actual song or video on YouTube™!",
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.googleapis.com https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html",

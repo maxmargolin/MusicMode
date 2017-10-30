@@ -84,11 +84,13 @@ window.onload = function() {
                                 //a.setAttribute("placeholder", ToTime(times[index]));
                                 a.value = ToTime(times[index]);
                                 a.setAttribute("id", String.fromCharCode(96 + index));
+                                a.setAttribute("class", "innerBox");
                                 //    a.setAttribute("disabled", "true");
                                 var b = document.createElement("input");
                                 b.setAttribute("type", "text");
                                 b.value = ToTime(times[index + 1]);
                                 b.setAttribute("id", String.fromCharCode(97 + index));
+                                b.setAttribute("class", "innerBox");
                                 //  b.setAttribute("disabled", "true");
                                 var element = document.getElementById("extra");
                                 element.appendChild(a);
@@ -232,7 +234,6 @@ window.onload = function() {
                 var obj = {};
                 var arr = [newStart, pointA, pointB, pointC, pointD, newEnd];
                 obj[currentID] = arr;
-                alert("pushed" + arr);
 
                 chrome.storage.sync.set(obj);
 
