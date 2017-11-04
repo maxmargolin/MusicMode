@@ -25,14 +25,14 @@ function InSkipper() {
                                 if (startpoint > 0)
                                         localStart = false;
                                 //safety
-                                if (currentTime > 0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 2) {
+                                if (currentTime > 0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 1) {
                                         TotalTimeUpdate(startpoint - currentTime);
                                         video.currentTime = startpoint;
                                 }
 
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
                                         var skipTime = result[vID[1]][i];
-                                        if ((result[vID[1]][i + 1] - result[vID[1]][i]) > 3) {
+                                        if ((result[vID[1]][i + 1] - result[vID[1]][i]) > 1) {
                                                 localMid = false;
                                                 if (inSkipRange(currentTime, skipTime)) {
                                                         video.currentTime = result[vID[1]][i + 1];
@@ -56,7 +56,7 @@ function InSkipper() {
 
                                 var lstartpoint = result[vID[1]][0];
                                 //safety
-                                if (currentTime > 0.1 && localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 2) {
+                                if (currentTime > 0.1 && localStart && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 1) {
                                         TotalTimeUpdate(lstartpoint - currentTime);
                                         video.currentTime = lstartpoint;
 
@@ -87,5 +87,5 @@ function InSkipper() {
 }
 
 function inSkipRange(current_time, skip_time) {
-        return (current_time >= skip_time && current_time <= skip_time + 3);
+        return (current_time >= skip_time && current_time <= skip_time + 1);
 }
