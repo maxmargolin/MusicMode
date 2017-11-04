@@ -161,6 +161,14 @@ a:visited {
   transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
 }
 
+#addMid{
+ height: 25px;
+ line-height: 27px;
+  background-color: Yellow;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 0 20px 0 black;
+}
 .button span, .button .icon {
   display: block;
   text-align: center;
@@ -204,6 +212,9 @@ a:visited {
 .button .icon .fa-floppy-o {
   height: 30px;
 }
+.button .icon .fa-plus {
+  height: 30px;
+}
 
 .button .icon .fa-check {
   display: none;
@@ -221,12 +232,18 @@ a:visited {
 .button.success .icon .fa, .button:hover .icon .fa {
   font-size: 35px;
 }
+.button.success #i222 .fa-check, .button:hover #i222 .fa {
+  font-size: 27px;
+}
 
 .button.success {
   background-color: #27ae60;
 }
 
 .button.success .icon .fa-floppy-o {
+  display: none;
+}
+.button.success .icon .fa-plus {
   display: none;
 }
 
@@ -236,9 +253,13 @@ a:visited {
 
 .button:hover {
   opacity: .9;
+
 }
 
 .button:hover .icon .fa-floppy-o {
+  height: 39px;
+}
+.button:hover .icon .fa-plus {
   height: 39px;
 }
 

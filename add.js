@@ -1,7 +1,7 @@
 window.onload = function() {
         var start = 0;
         var end = 0;
-
+        var InnerIndex = 1;
 
         var currentID = "x";
         chrome.tabs.query({
@@ -21,6 +21,7 @@ window.onload = function() {
                                 document.getElementById('icon1').style.display = "none";
                                 document.getElementById('icon2').style.display = "none";
                                 document.getElementById('sethr').style.display = "none";
+                                document.getElementById('addMid').style.display = "none";
                         }
 
 
@@ -72,37 +73,40 @@ window.onload = function() {
         });
 
 
+        function AddMidRow(timeA, timeB, index) {
+                InnerIndex += 2;
+                if (InnerIndex >= 4)
+                        document.getElementById('addMid').style.display = "none"; // $("#addMid").fadeOut(200);
+                var a = document.createElement("input");
+                a.setAttribute("type", "text");
+                a.value = ToTime(timeA);
+                a.setAttribute("id", String.fromCharCode(96 + index));
+                a.setAttribute("class", "innerBox");
+                var b = document.createElement("input");
+                b.setAttribute("type", "text");
+                b.value = ToTime(timeB);
+                b.setAttribute("id", String.fromCharCode(97 + index));
+                b.setAttribute("class", "innerBox");
+                var element = document.getElementById("extra");
+                var arrow = document.createElement("i");
+                arrow.setAttribute("class", "fa fa-arrow-right");
+                arrow.setAttribute("aria-hidden", "true");
+                $(a).hide().appendTo(element).fadeIn(300);
+                $(arrow).hide().appendTo(element).fadeIn(300);
+                $(b).hide().appendTo(element).fadeIn(300);
+        }
 
         function ShowInnerSkips(times) {
                 var index = 1;
-                var syncSkiperFound = false;
+                var found = false;
                 while (index < times.length - 1) {
                         if (times[index] > 0 && times[index + 1] > 0) {
-                                syncSkiperFound = true;
-                                var a = document.createElement("input");
-                                a.setAttribute("type", "text");
-                                //a.setAttribute("placeholder", ToTime(times[index]));
-                                a.value = ToTime(times[index]);
-                                a.setAttribute("id", String.fromCharCode(96 + index));
-                                a.setAttribute("class", "innerBox");
-                                //    a.setAttribute("disabled", "true");
-                                var b = document.createElement("input");
-                                b.setAttribute("type", "text");
-                                b.value = ToTime(times[index + 1]);
-                                b.setAttribute("id", String.fromCharCode(97 + index));
-                                b.setAttribute("class", "innerBox");
-                                //  b.setAttribute("disabled", "true");
-                                var element = document.getElementById("extra");
-                                element.appendChild(a);
-                                var arrow = document.createElement("i");
-                                arrow.setAttribute("class", "fa fa-arrow-right");
-                                arrow.setAttribute("aria-hidden", "true");
-                                element.appendChild(arrow)
-                                element.appendChild(b);
+                                found = true;
+                                AddMidRow(times[index], times[index + 1], index);
                         }
                         index += 2;
                 }
-                return syncSkiperFound;
+                return found;
         }
 
 
@@ -138,8 +142,8 @@ window.onload = function() {
         });
 
         function ToTime(seconds) {
-                if (seconds == "" || seconds == undefined)
-                        return 0;
+                if (seconds == 0 || seconds == "" || seconds == undefined)
+                        return "0:00";
                 if (parseInt(seconds) < 3600)
                         return parseInt(Math.floor(seconds / 60)) + ":" + parseInt((seconds % 60) / 10) + parseInt(seconds % 10);
                 else
@@ -148,6 +152,7 @@ window.onload = function() {
         }
 
         function ToSeconds(str) {
+                str = str + '';
                 var p = str.split(':'),
                         s = 0,
                         m = 1;
@@ -210,20 +215,29 @@ window.onload = function() {
                 firebase.initializeApp(config);
         } catch (err) {}
 
+
         document.getElementById('setButton').onclick = function() {
-                var newStart = ToSeconds(document.getElementById("start").value);
-                var newEnd = ToSeconds(document.getElementById("end").value);
+                var newStart = Math.max(ToSeconds($('#start').val()), 0);
+                var newEnd = Math.max(ToSeconds($('#end').val()), 0);
                 var pointA = 0;
                 var pointB = 0;
                 var pointC = 0;
                 var pointD = 0;
                 try {
-                        pointA = ToSeconds(document.getElementById("a").value);
-                        pointB = ToSeconds(document.getElementById("b").value);
-                        pointC = ToSeconds(document.getElementById("c").value);
-                        pointD = ToSeconds(document.getElementById("d").value);
+                        pointA = Math.max(ToSeconds($('#a').val()), 0);
+                        pointB = Math.max(ToSeconds($('#b').val()), 0);
+                        pointC = Math.max(ToSeconds($('#c').val()), 0);
+                        pointD = Math.max(ToSeconds($('#d').val()), 0);
                 } catch (err) {}
 
+                if (isNaN(pointA))
+                        pointA = 0;
+                if (isNaN(pointB))
+                        pointB = 0;
+                if (isNaN(pointC))
+                        pointC = 0;
+                if (isNaN(pointD))
+                        pointD = 0;
                 if (currentID.length != 11)
                 ;
                 if (isNaN(newStart))
@@ -253,7 +267,7 @@ window.onload = function() {
                 chrome.storage.sync.get("RateCount", function(result) {
                         rates = result["RateCount"];
                         //send
-                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end))
+                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0)
                                 try {
                                         firebase.database().ref(currentID).set({
                                                 times: arr,
@@ -279,5 +293,9 @@ window.onload = function() {
                 });
         };
 
+
+        document.getElementById('addMid').onclick = function() {
+                AddMidRow(0, 0, InnerIndex);
+        };
 
 };
