@@ -75,7 +75,7 @@ window.onload = function() {
 
         function AddMidRow(timeA, timeB, index) {
                 InnerIndex += 2;
-                if (InnerIndex >= 4)
+                if (InnerIndex >= 6)
                         document.getElementById('addMid').style.display = "none"; // $("#addMid").fadeOut(200);
                 var a = document.createElement("input");
                 a.setAttribute("type", "text");
@@ -116,12 +116,9 @@ window.onload = function() {
 
         function show() {
 
-                if (document.getElementById("expand2").style.display != "block") {
-                        document.getElementById("expand2").style.display = "block";
-                } else {
-                        document.getElementById("expand3").style.display = "block";
-                        document.getElementById("more").style.display = "none"
-                }
+                document.getElementById("expand2").style.display = "block";
+                document.getElementById("more").style.display = "none"
+
         }
 
         chrome.storage.sync.get("totalTime", function(time) {
@@ -223,11 +220,15 @@ window.onload = function() {
                 var pointB = 0;
                 var pointC = 0;
                 var pointD = 0;
+                var pointE = 0;
+                var pointF = 0;
                 try {
                         pointA = Math.max(ToSeconds($('#a').val()), 0);
                         pointB = Math.max(ToSeconds($('#b').val()), 0);
                         pointC = Math.max(ToSeconds($('#c').val()), 0);
                         pointD = Math.max(ToSeconds($('#d').val()), 0);
+                        pointE = Math.max(ToSeconds($('#e').val()), 0);
+                        pointF = Math.max(ToSeconds($('#f').val()), 0);
                 } catch (err) {}
 
                 if (isNaN(pointA))
@@ -238,6 +239,10 @@ window.onload = function() {
                         pointC = 0;
                 if (isNaN(pointD))
                         pointD = 0;
+                if (isNaN(pointE))
+                        pointE = 0;
+                if (isNaN(pointF))
+                        pointF = 0;
                 if (currentID.length != 11)
                 ;
                 if (isNaN(newStart))
@@ -246,7 +251,7 @@ window.onload = function() {
                         newEnd = 0;
 
                 var obj = {};
-                var arr = [newStart, pointA, pointB, pointC, pointD, newEnd];
+                var arr = [newStart, pointA, pointB, pointC, pointD,pointE,pointF, newEnd];
                 obj[currentID] = arr;
 
                 chrome.storage.sync.set(obj);
@@ -267,7 +272,7 @@ window.onload = function() {
                 chrome.storage.sync.get("RateCount", function(result) {
                         rates = result["RateCount"];
                         //send
-                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0)
+                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
                                 try {
                                         firebase.database().ref(currentID).set({
                                                 times: arr,
