@@ -1,5 +1,5 @@
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 45; //change to force update
+        var currentDBVersion = 47; //change to force update
         if (result == null || result["version"] == null || result["version"][0] != currentDBVersion) {
                 var db = get_data(currentDBVersion);
 
@@ -78,6 +78,12 @@ chrome.runtime.onMessage.addListener(
         });
 
 
+function delmarks() {
+        var elements = document.getElementsByClassName('skipBar');
+        while (elements.length > 0) {
+                elements[0].parentNode.removeChild(elements[0]);
+        }
+}
 //skip part of video
 function process() {
 
@@ -109,6 +115,8 @@ function process() {
                 });
 
         }
+
+        delmarks();
 }
 
 function TotalTimeUpdate(toAdd) {
