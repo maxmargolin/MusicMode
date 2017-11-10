@@ -1,8 +1,7 @@
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 49; //change to force update
+        var currentDBVersion = 53; //change to force update
         if (result == null || result["version"] == null || result["version"][0] != currentDBVersion) {
                 var db = get_data(currentDBVersion);
-
                 //add to local storage
                 for (var i = 0; i < db.length; i++) {
                         var obj = {};
@@ -69,8 +68,10 @@ chrome.runtime.onMessage.addListener(
                 if (request.req == "id") {
                         var curl = location.href;
                         var vID = curl.match(/v\=(.{11})/);
+                        var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].innerHTML; //title
                         sendResponse({
-                                farewell: vID[1]
+                                farewell: vID[1],
+                                name: title
                         });
 
                 }

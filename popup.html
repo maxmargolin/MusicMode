@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/html" style="min-width:200px;">
+<html xmlns="http://www.w3.org/1999/html" style="min-width:203px;">
 
 <head>
   <title>Skipper</title>
@@ -11,18 +11,18 @@
 </head>
 
 <h3 align="middle" id="headline">Skip to Actual Video</h3>
+<span id="tspace"></span>
 <hr>
 <div class="sets">
-  <div class="inputWithIcon">
-    <input type="text" placeholder="Start Time" id="start" maxlength="5" autofocus>
-    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon1"></i>
-  </div>
+  <span id="starttext">Start at </span><span class="inputWithIcon">
+  <input type="text" placeholder="0:00" id="start" maxlength="7" autofocus>
+  <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon1"></i>
+</span>
   <div id="extra"></div>
-
-  <div class="inputWithIcon">
-    <input type="text" placeholder="End  Time" id="end" maxlength="5">
-    <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon2"></i>
-  </div>
+  <span id="endtext">Stop at  </span><span class="inputWithIcon">
+  <input type="text" placeholder="" id="end" maxlength="7">
+  <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon2"></i>
+</span>
   <a class="button" href="#" id="addMid" role="button">
   <span>Internal Skip</span>
   <div class="icon" id="i222">
@@ -30,7 +30,7 @@
     <i class="fa fa-check"></i>
   </div>
 </a>
-    <a class="button" href="#" id="setButton" role="button">
+  <a class="button" href="#" id="setButton" role="button">
   	<span>Save</span>
   	<div class="icon" id="111">
   		<i class="fa fa-floppy-o"></i>
@@ -60,8 +60,7 @@
     <a href="http://www.tumblr.com/share/link?url=https://bit.ly/skippershare&amp;title=This%20extension%20already%20saved%20me%20444%20seconds!" target="_blank">  <img src="https://simplesharebuttons.com/images/somacro/tumblr.png" alt="Tumblr"/></a>
     <a id="tw" href="https://twitter.com/intent/tweet?text=This%20extension%20already%20saved%20me%20444%20seconds!%20http://bit.ly/skippershare" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter"/></a>
     <br/><a href=http://bit.ly/5starskipper target="_blank" style="display: none;" id="rate">Or rate 5 stars &#10084;</a>
-    <hr>
-    Talk to me about anything at<br/>hypermusictv@gmail.com =)
+    <hr> Talk to me about anything at<br/>hypermusictv@gmail.com =)
   </div>
   <p id="more"><i class="down"></i></p>
 

@@ -55,12 +55,13 @@ function InSkipper() {
                                 }
 
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
+                                    localMid = false;
                                         var skipFrom = result[vID[1]][i];
                                         var skipTo = result[vID[1]][i + 1];
 
                                         ShowSkipOnBar(skipFrom, skipTo);
                                         if (skipTo - skipFrom > 1) {
-                                                localMid = false;
+
                                                 if (inSkipRange(currentTime, skipFrom)) {
                                                         video.currentTime = skipTo;
                                                         TotalTimeUpdate(skipTo - currentTime);
@@ -119,7 +120,6 @@ function InSkipper() {
 
                 }
         });
-
 }
 
 function inSkipRange(current_time, skip_time) {

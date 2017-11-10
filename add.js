@@ -13,15 +13,24 @@ window.onload = function() {
                 }, function(response) { //ask for information for this page
                         try {
                                 currentID = response.farewell;
+                                var name = response.name;
+                                var top = document.createElement("span");
+                                top.innerHTML = name;
+                                var tspace = document.getElementById("tspace");
+                                $(top).hide().appendTo(tspace).fadeIn(300);
+
+
                         } catch (err) {}
                         if (currentID.length !== 11) {
                                 document.getElementById('start').style.display = "none";
                                 document.getElementById('end').style.display = "none";
                                 document.getElementById('setButton').style.display = "none";
-                                document.getElementById('icon1').style.display = "none";
-                                document.getElementById('icon2').style.display = "none";
                                 document.getElementById('sethr').style.display = "none";
                                 document.getElementById('addMid').style.display = "none";
+                                document.getElementById('icon1').style.display = "none";
+                                document.getElementById('icon2').style.display = "none";
+                                document.getElementById('starttext').style.display = "none";
+                                document.getElementById('endtext').style.display = "none";
                         }
 
 
@@ -67,7 +76,6 @@ window.onload = function() {
                                                 } catch (err) {}
                                         }
                                 });
-                                //  }
                         });
                 });
         });
@@ -76,7 +84,13 @@ window.onload = function() {
         function AddMidRow(timeA, timeB, index) {
                 InnerIndex += 2;
                 if (InnerIndex >= 6)
-                        document.getElementById('addMid').style.display = "none"; // $("#addMid").fadeOut(200);
+                        document.getElementById('addMid').style.display = "none";
+                var text1 = document.createElement("span");
+                var text2 = document.createElement("span");
+                text1.setAttribute("size", "3");
+                text2.setAttribute("size", "3");
+                text1.innerHTML = "Jump from ";
+                text2.innerHTML = " to ";
                 var a = document.createElement("input");
                 a.setAttribute("type", "text");
                 a.value = ToTime(timeA);
@@ -88,20 +102,36 @@ window.onload = function() {
                 b.setAttribute("id", String.fromCharCode(97 + index));
                 b.setAttribute("class", "innerBox");
                 var element = document.getElementById("extra");
-                var arrow = document.createElement("i");
-                arrow.setAttribute("class", "fa fa-arrow-right");
-                arrow.setAttribute("aria-hidden", "true");
+                var del = document.createElement("i");
+                del.setAttribute("aria-hidden", true);
+                del.setAttribute("class", "fa fa-times");
+
+
+                $(del).hide().appendTo(element).fadeIn(300);
+                $(text1).hide().appendTo(element).fadeIn(300);
                 $(a).hide().appendTo(element).fadeIn(300);
-                $(arrow).hide().appendTo(element).fadeIn(300);
+                $(text2).hide().appendTo(element).fadeIn(300);
                 $(b).hide().appendTo(element).fadeIn(300);
+                del.onclick = function() {
+                        InnerIndex -= 2;
+                        if (InnerIndex < 6)
+                                document.getElementById('addMid').style.display = "block";
+                        b.remove();
+                        a.remove();
+                        text2.remove();
+                        text1.remove();
+                        del.remove();
+                };
+
         }
 
         function ShowInnerSkips(times) {
                 var index = 1;
                 var found = false;
                 while (index < times.length - 1) {
+                  found = true;
                         if (times[index] > 0 && times[index + 1] > 0) {
-                                found = true;
+
                                 AddMidRow(times[index], times[index + 1], index);
                         }
                         index += 2;
@@ -124,12 +154,15 @@ window.onload = function() {
         chrome.storage.sync.get("totalTime", function(time) {
                 if (time["totalTime"] != undefined) {
                         tt = time["totalTime"];
+                        if (tt > 0)
+                                document.getElementById("rate").style.display = "block";
+                        if (tt > 100000)
+                                tt = Math.floor(tt / 1000) + "k";
                         document.getElementById('counter').innerHTML = tt;
                         document.getElementById("fb").setAttribute("href", "https://www.facebook.com/sharer/sharer.php?u=bit.ly/skippershare&quote=This%20extension%20already%20saved%20me%20" + tt + "%20seconds!");
                         document.getElementById("tw").setAttribute("href", "https://twitter.com/intent/tweet?text=This%20extension%20already%20saved%20me%20" + tt + "%20seconds!%20http://bit.ly/skippershare");
                         document.getElementById("email").setAttribute("href", "mailto:?Subject=This%20Chrome%20extension%20already%20saved%20me%20" + tt + "%20seconds!&Body='Skipper%20-%20Music%20Mode%20For%20YouTube'%20%20skips%20to%20the%20actual%20song/video%20for%20you,%20You%20should%20Check%20it%20out:%20%20https://chrome.google.com/webstore/detail/skipper-music-mode-for-yo/chojffponkoboggmjpnkflkbcelacijk");
-                        if (tt > 0)
-                                document.getElementById("rate").style.display = "block";
+
                 }
         });
 
@@ -251,7 +284,7 @@ window.onload = function() {
                         newEnd = 0;
 
                 var obj = {};
-                var arr = [newStart, pointA, pointB, pointC, pointD,pointE,pointF, newEnd];
+                var arr = [newStart, pointA, pointB, pointC, pointD, pointE, pointF, newEnd];
                 obj[currentID] = arr;
 
                 chrome.storage.sync.set(obj);

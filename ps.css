@@ -6,7 +6,7 @@ body {
 }
 
 input[type=text] {
-  width: 100%;
+  width: 75%;
   border: 2px solid #aaa;
   border-radius: 4px;
   margin: 8px 0;
@@ -32,7 +32,7 @@ input[type=text]:focus {
 .inputWithIcon i {
   position: absolute;
   left: 0;
-  top: 9px;
+  top: -10px;
   padding: 12px 12px;
   color: #aaa;
   transition: .3s;
@@ -112,7 +112,7 @@ input[type=text]:focus {
 }
 
 #a, #b, #c, #d,#e,#f {
-  width: 47%;
+  width: 26%;
   background-color: #F0F0F0;
 }
 
