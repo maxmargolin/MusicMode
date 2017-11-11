@@ -129,7 +129,7 @@ window.onload = function() {
                 var index = 1;
                 var found = false;
                 while (index < times.length - 1) {
-                  found = true;
+                        found = true;
                         if (times[index] > 0 && times[index + 1] > 0) {
 
                                 AddMidRow(times[index], times[index + 1], index);
@@ -288,6 +288,14 @@ window.onload = function() {
                 obj[currentID] = arr;
 
                 chrome.storage.sync.set(obj);
+
+                chrome.tabs.query({
+                        active: true,
+                        currentWindow: true
+                }, function(tabs) {
+                        chrome.tabs.sendMessage(tabs[0].id, {
+                                req: "redraw"
+                        }, function(response) {}); });
 
 
 

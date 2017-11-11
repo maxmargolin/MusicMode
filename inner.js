@@ -3,13 +3,33 @@ setInterval(InSkipper, 444);
 
 
 var prevID = 0;
-var draw = false;
+
+//popup is requesting id
+chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+                //popup is requesting id
+                if (request.req == "redraw") {
+                        delmarks();
+                } else if (request.req == "id") {
+                        var curl = location.href;
+                        var vID = curl.match(/v\=(.{11})/);
+                        var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].innerHTML; //title
+                        sendResponse({
+                                farewell: vID[1],
+                                name: title
+                        });
+
+                }
+
+        });
+
 
 function ShowSkipOnBar(aa, bb) {
-        if (draw) {
+        if (document.getElementById('skipBar' + aa +"x"+ bb) == null) {
                 var bar = document.getElementsByClassName("ytp-progress-list")[0];
                 var skipBar = document.createElement("div");
                 skipBar.setAttribute("class", "skipBar");
+                skipBar.setAttribute("id", "skipBar" + aa +"x"+ bb);
                 let vid = document.querySelector("video.html5-main-video");
                 let tx = vid.duration;
                 var left = 100 * aa / tx;
@@ -28,7 +48,6 @@ function InSkipper() {
                         var vID = link.match(/v\=(.{11})/);
                         if (prevID != vID[1]) //video change
                         {
-                                draw = true;
                                 delmarks();
                         }
                         prevID = vID[1];
@@ -55,7 +74,7 @@ function InSkipper() {
                                 }
 
                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
-                                    localMid = false;
+                                        localMid = false;
                                         var skipFrom = result[vID[1]][i];
                                         var skipTo = result[vID[1]][i + 1];
 
@@ -119,6 +138,7 @@ function InSkipper() {
 
 
                 }
+
         });
 }
 

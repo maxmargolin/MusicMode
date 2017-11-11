@@ -1,5 +1,5 @@
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 53; //change to force update
+        var currentDBVersion = 57; //change to force update
         if (result == null || result["version"] == null || result["version"][0] != currentDBVersion) {
                 var db = get_data(currentDBVersion);
                 //add to local storage
@@ -61,22 +61,7 @@ window.addEventListener("load", process); // one-time late postprocessing
 
 
 
-//popup is requesting id
-chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-                //popup is requesting id
-                if (request.req == "id") {
-                        var curl = location.href;
-                        var vID = curl.match(/v\=(.{11})/);
-                        var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].innerHTML; //title
-                        sendResponse({
-                                farewell: vID[1],
-                                name: title
-                        });
 
-                }
-
-        });
 
 
 function delmarks() {
@@ -88,6 +73,7 @@ function delmarks() {
 //skip part of video
 function process() {
 
+        delmarks();
         var curl = location.href; //current url
         var vID = curl.match(/v\=(.{11})/); //regex for ID
 
@@ -116,8 +102,7 @@ function process() {
                 });
 
         }
-
-        delmarks();
+delmarks();
 }
 
 function TotalTimeUpdate(toAdd) {
