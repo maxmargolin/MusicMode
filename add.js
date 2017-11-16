@@ -295,26 +295,29 @@ window.onload = function() {
                 }, function(tabs) {
                         chrome.tabs.sendMessage(tabs[0].id, {
                                 req: "redraw"
-                        }, function(response) {}); });
-
-
-
-                //stats
-                var saves = 0;
-                var rates = 0;
-                chrome.storage.sync.get("SaveCount", function(result) {
-                        saves = result["SaveCount"] + 1;
-                        var toPush = {};
-                        toPush["SaveCount"] = saves;
-                        chrome.storage.sync.set(toPush);
-
-
+                        }, function(response) {});
                 });
+
+
+
+
                 chrome.storage.sync.get("RateCount", function(result) {
                         rates = result["RateCount"];
                         //send
                         if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
                                 try {
+                                        //stats
+                                        var saves = 0;
+                                        var rates = 0;
+                                        chrome.storage.sync.get("SaveCount", function(result) {
+                                                saves = result["SaveCount"] + 1;
+                                                var toPush = {};
+                                                toPush["SaveCount"] = saves;
+                                                chrome.storage.sync.set(toPush);
+
+
+                                        });
+
                                         firebase.database().ref(currentID).set({
                                                 times: arr,
                                                 sCount: saves,

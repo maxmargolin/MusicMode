@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
                 } else if (request.req == "id") {
                         var curl = location.href;
                         var vID = curl.match(/v\=(.{11})/);
-                        var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].innerHTML; //title
+                        var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].textContent; //title
                         sendResponse({
                                 farewell: vID[1],
                                 name: title
@@ -25,18 +25,21 @@ chrome.runtime.onMessage.addListener(
 
 
 function ShowSkipOnBar(aa, bb) {
-        if (document.getElementById('skipBar' + aa +"x"+ bb) == null) {
+        if (document.getElementById('skipBar' + aa + "x" + bb) == null) {
                 var bar = document.getElementsByClassName("ytp-progress-list")[0];
                 var skipBar = document.createElement("div");
                 skipBar.setAttribute("class", "skipBar");
-                skipBar.setAttribute("id", "skipBar" + aa +"x"+ bb);
+                skipBar.setAttribute("id", "skipBar" + aa + "x" + bb);
                 let vid = document.querySelector("video.html5-main-video");
                 let tx = vid.duration;
-                var left = 100 * aa / tx;
-                var right = (100 * (bb - aa) / tx) - 0.1;
-                skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: lightgreen; border: 1px solid black;")
-                var barArea = document.getElementsByClassName("ytp-progress-bar")[0]; // Get the <ul> element to insert a new node
-                barArea.insertBefore(skipBar, bar);
+                if (tx != null && tx > 0) {
+                  //skipBar.setAttribute("title", "skipper");
+                        var left = 100 * aa / tx;
+                        var right = (100 * (bb - aa) / tx) - 0.1;
+                        skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: lightgreen; border: 1px solid black;")
+                        var barArea = document.getElementsByClassName("ytp-progress-bar")[0]; // Get the <ul> element to insert a new node
+                        barArea.insertBefore(skipBar, bar);
+                }
         }
 }
 
