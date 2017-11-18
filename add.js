@@ -320,8 +320,8 @@ window.onload = function() {
 
                                         firebase.database().ref(currentID).set({
                                                 times: arr,
-                                                sCount: saves,
-                                                rCount: rates,
+                                                //sCount: saves,
+                                                //rCount: rates,
                                                 userTT: tt
                                         });
                                 } catch (err) {}

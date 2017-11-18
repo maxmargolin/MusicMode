@@ -1,16 +1,23 @@
 chrome.storage.local.get("version", function(result) {
-        var currentDBVersion = 57; //change to force update
-        if (result == null || result["version"] == null || result["version"][0] != currentDBVersion) {
-                var db = get_data(currentDBVersion);
-                //add to local storage
-                for (var i = 0; i < db.length; i++) {
+        chrome.storage.local.get("dblength", function(len) {
+                if (result == null || len == null || result["version"] == null || result["version"] < len["dblength"]) {
+                        var db = get_data();
+                        //add to local storage
+                        var pushedNow = 0;
                         var obj = {};
-                        obj[db[i][0]] = db[i].slice(1);
+
+                        for (var i = 0; i < db.length; i++) {
+                                obj[db[i][0]] = db[i].slice(1);
+                                pushedNow++;
+                                chrome.storage.local.set(obj);
+                        }
+
+                        //items in local
+                        obj = {};
+                        obj["version"] = pushedNow;
                         chrome.storage.local.set(obj);
                 }
-
-
-        }
+        });
 });
 
 
@@ -102,7 +109,7 @@ function process() {
                 });
 
         }
-delmarks();
+        delmarks();
 }
 
 function TotalTimeUpdate(toAdd) {
