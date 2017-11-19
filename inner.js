@@ -47,6 +47,7 @@ function InSkipper() {
 
         chrome.storage.local.get("on", function(result) {
                 if (result["on"]) {
+                  try{
                         var link = String(document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0]);
                         var vID = link.match(/v\=(.{11})/);
                         if (prevID != vID[1]) //video change
@@ -63,7 +64,6 @@ function InSkipper() {
                         var localEnd = true;
                         var localMid = true;
                         chrome.storage.sync.get(vID[1], function(result) {
-
 
                                 var startpoint = result[vID[1]][0];
                                 ShowSkipOnBar(0, startpoint);
@@ -141,6 +141,8 @@ function InSkipper() {
 
 
                 }
+                catch (err) {}
+              }
 
         });
 }
