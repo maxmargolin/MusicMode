@@ -82,8 +82,6 @@ window.addEventListener("load", process); // one-time late postprocessing
 
 function delmarks() {
         try {
-
-
                 var elements = document.getElementsByClassName('skipBar');
                 elements[0].parentNode.removeChild(elements[0]);
         } catch (e) {}
