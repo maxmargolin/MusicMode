@@ -1,4 +1,4 @@
-setInterval(InSkipper, 444);
+setInterval(InSkipper, 400);
 
 
 
