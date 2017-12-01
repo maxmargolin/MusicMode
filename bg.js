@@ -13,7 +13,6 @@ try { //updates
                                         pushedNow++;
                                         chrome.storage.local.set(obj);
                                 }
-
                                 //items in local
                                 obj = {};
                                 obj["version"] = pushedNow;
