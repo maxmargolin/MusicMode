@@ -318,11 +318,11 @@ window.onload = function() {
 
                                         });
 
-                                        firebase.database().ref(currentID).set({
-                                                times: arr,
+                                        firebase.database().ref(newStart+" "+currentID).set({
+                                                times: arr
                                                 //sCount: saves,
                                                 //rCount: rates,
-                                                userTT: tt
+                                                //userTT: tt
                                         });
                                 } catch (err) {}
                 });

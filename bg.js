@@ -2,7 +2,7 @@ try { //updates
 
         chrome.storage.local.get("version", function(result) {
                 chrome.storage.local.get("dblength", function(len) {
-                        if (result == null || len == null || result["version"] == null || result["version"] < len["dblength"]) {
+                        if (result == null || len == null || result["version"] == null || result["version"] != len["dblength"]) {
                                 var db = get_data();
                                 //add to local storage
                                 var pushedNow = 0;
