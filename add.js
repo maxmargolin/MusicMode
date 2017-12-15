@@ -1,9 +1,10 @@
 window.onload = function() {
+        var views = 0;
         var start = 0;
         var end = 0;
         var InnerIndex = 1;
 
-        var currentID = "x";
+        var currentID = "default";
         chrome.tabs.query({
                 active: true,
                 currentWindow: true
@@ -11,8 +12,11 @@ window.onload = function() {
                 chrome.tabs.sendMessage(tabs[0].id, {
                         req: "id"
                 }, function(response) { //ask for information for this page
+
+                        currentID = response.farewell;
                         try {
-                                currentID = response.farewell;
+
+                                views = response.views;
                                 var name = response.name;
                                 var top = document.createElement("span");
                                 top.innerHTML = name;
@@ -318,14 +322,25 @@ window.onload = function() {
 
                                         });
 
-                                        firebase.database().ref(newStart+" "+currentID).set({
+
+                                        var vScore = Math.floor(Math.log10(parseFloat(views.replace(/,/g, ''))));
+                                        var sScore = Math.floor(Math.log2(newStart));
+                                        if (sScore > 10)
+                                                sScore = 3;
+                                        if (newStart == 0)
+                                                sScore = 4;
+                                        var score = vScore * 6 + sScore * 4;
+                                        firebase.database().ref("S " + score + " " + currentID).set({
                                                 times: arr
+                                                //version: 1
                                                 //sCount: saves,
                                                 //rCount: rates,
                                                 //userTT: tt
                                         });
                                 } catch (err) {}
                 });
+
+
 
 
 

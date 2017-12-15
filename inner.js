@@ -14,10 +14,14 @@ chrome.runtime.onMessage.addListener(
                 } else if (request.req == "id") {
                         var curl = location.href;
                         var vID = curl.match(/v\=(.{11})/);
+
                         var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].textContent; //title
+                        var vs = (document.getElementsByClassName('view-count')[0]).innerHTML.match(/((\d|,)+)/);
                         sendResponse({
                                 farewell: vID[1],
-                                name: title
+                                name: title,
+                                views: vs[0]
+
                         });
 
                 }
@@ -76,9 +80,11 @@ function InSkipper() {
                                 var localEnd = true;
                                 var localMid = true;
                                 chrome.storage.sync.get(vID[1], function(result) {
-
-                                        var startpoint = result[vID[1]][0];
-                                        ShowSkipOnBar(0, startpoint);
+                                        var startpoint = 0;
+                                        if (result && vID && vID[1] && result[vID[1]])
+                                                startpoint = result[vID[1]][0];
+                                        if (startpoint != 0)
+                                                ShowSkipOnBar(0, startpoint);
                                         //no need for local start point
                                         if (startpoint > 0)
                                                 localStart = false;
@@ -88,68 +94,72 @@ function InSkipper() {
                                                 video.currentTime = startpoint;
                                         }
 
-                                        for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
-                                                localMid = false;
-                                                var skipFrom = result[vID[1]][i];
-                                                var skipTo = result[vID[1]][i + 1];
-
-                                                ShowSkipOnBar(skipFrom, skipTo);
-                                                if (skipTo - skipFrom > 1) {
-
-                                                        if (inSkipRange(currentTime, skipFrom)) {
-                                                                video.currentTime = skipTo;
-                                                                TotalTimeUpdate(skipTo - currentTime);
-                                                        }
-                                                }
-                                        }
-
-
-                                        var endpoint = result[vID[1]][result[vID[1]].length - 1];
-                                        if (endpoint > 0) {
-                                                ShowSkipOnBar(endpoint, totalDuration);
-                                                localEnd = false;
-                                        }
-                                        if ((result[vID[1]].length % 2) == 0 && currentTime >= endpoint && endpoint != 0 && Math.floor(currentTime < totalDuration)) {
-                                                video.currentTime = Math.ceil(totalDuration);
-                                                TotalTimeUpdate(totalDuration - currentTime);
-                                        }
-                                });
-
-                                //local
-                                chrome.storage.local.get(vID[1], function(result) {
-
-                                        var lstartpoint = result[vID[1]][0];
-                                        //safety
-                                        if (localStart) {
-                                                ShowSkipOnBar(0, lstartpoint);
-                                                if (currentTime > 0.1 && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 1) {
-                                                        TotalTimeUpdate(lstartpoint - currentTime);
-                                                        video.currentTime = lstartpoint;
-
-                                                }
-                                        }
-
-                                        if (localMid) {
+                                        if (result[vID[1]]) {
                                                 for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
+                                                        localMid = false;
                                                         var skipFrom = result[vID[1]][i];
                                                         var skipTo = result[vID[1]][i + 1];
+
                                                         ShowSkipOnBar(skipFrom, skipTo);
-                                                        if (inSkipRange(currentTime, skipFrom)) {
-                                                                video.currentTime = skipTo;
-                                                                TotalTimeUpdate(skipTo - currentTime);
+                                                        if (skipTo - skipFrom > 1) {
+
+                                                                if (inSkipRange(currentTime, skipFrom)) {
+                                                                        video.currentTime = skipTo;
+                                                                        TotalTimeUpdate(skipTo - currentTime);
+                                                                }
                                                         }
                                                 }
-                                        }
 
-                                        var end = result[vID[1]][result[vID[1]].length - 1];
-                                        if (localEnd && end > localStart && (result[vID[1]].length % 2) == 0) {
-                                                ShowSkipOnBar(end, totalDuration);
-                                                if (currentTime >= end && Math.floor(currentTime < totalDuration)) {
+
+                                                var endpoint = result[vID[1]][result[vID[1]].length - 1];
+                                                if (endpoint > 0) {
+                                                        ShowSkipOnBar(endpoint, totalDuration);
+                                                        localEnd = false;
+                                                }
+                                                if ((result[vID[1]].length % 2) == 0 && currentTime >= endpoint && endpoint != 0 && Math.floor(currentTime < totalDuration)) {
                                                         video.currentTime = Math.ceil(totalDuration);
                                                         TotalTimeUpdate(totalDuration - currentTime);
                                                 }
                                         }
                                 });
+
+                                //local
+                                if (vID[1] != undefined)
+                                        chrome.storage.local.get(vID[1], function(result) {
+                                                if (result != undefined && result[vID[1]] != undefined && result[vID[1]][0] != undefined) {
+                                                        var lstartpoint = result[vID[1]][0];
+                                                        //safety
+                                                        if (localStart) {
+                                                                ShowSkipOnBar(0, lstartpoint);
+                                                                if (currentTime > 0.1 && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 1) {
+                                                                        TotalTimeUpdate(lstartpoint - currentTime);
+                                                                        video.currentTime = lstartpoint;
+
+                                                                }
+                                                        }
+
+                                                        if (localMid) {
+                                                                for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
+                                                                        var skipFrom = result[vID[1]][i];
+                                                                        var skipTo = result[vID[1]][i + 1];
+                                                                        ShowSkipOnBar(skipFrom, skipTo);
+                                                                        if (inSkipRange(currentTime, skipFrom)) {
+                                                                                video.currentTime = skipTo;
+                                                                                TotalTimeUpdate(skipTo - currentTime);
+                                                                        }
+                                                                }
+                                                        }
+
+                                                        var end = result[vID[1]][result[vID[1]].length - 1];
+                                                        if (localEnd && end > localStart && (result[vID[1]].length % 2) == 0) {
+                                                                ShowSkipOnBar(end, totalDuration);
+                                                                if (currentTime >= end && Math.floor(currentTime < totalDuration)) {
+                                                                        video.currentTime = Math.ceil(totalDuration);
+                                                                        TotalTimeUpdate(totalDuration - currentTime);
+                                                                }
+                                                        }
+                                                }
+                                        });
 
                                 if (ee > 0)
                                         ShowSkipOnBar(ee, totalDuration, "purple");

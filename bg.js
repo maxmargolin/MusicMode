@@ -82,7 +82,8 @@ window.addEventListener("load", process); // one-time late postprocessing
 function delmarks() {
         try {
                 var elements = document.getElementsByClassName('skipBar');
-                elements[0].parentNode.removeChild(elements[0]);
+                while(elements[0])
+                  elements[0].parentNode.removeChild(elements[0]);
         } catch (e) {}
 }
 //skip part of video
@@ -96,15 +97,15 @@ function process() {
                 if (!timed) { //only if video is not timed
 
                         chrome.storage.local.get("on", function(result) {
-                                if (result["on"]) { //sync storage beforelocal
+                                if (result!=null && result["on"] && vID) { //sync storage beforelocal
                                         chrome.storage.sync.get(vID[1], function(result) {
                                                 if (!(result[vID[1]] == undefined || result[vID[1]][0] == undefined || result[vID[1]][0] == 0)) {
                                                         window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
                                                         TotalTimeUpdate(result[vID[1]][0]);
 
-                                                } else {
+                                                } else if(vID!=undefined && vID[1] !=undefined){
                                                         chrome.storage.local.get(vID[1], function(result) {
-                                                                if (!(result[vID[1]][0] === undefined || result[vID[1]][0] == 0)) {
+                                                                if (!(result[vID[1]] ==undefined || result[vID[1]][0] === undefined || result[vID[1]][0] == 0)) {
                                                                         window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
 
                                                                         TotalTimeUpdate(result[vID[1]][0]);
