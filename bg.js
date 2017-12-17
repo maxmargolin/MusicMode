@@ -89,7 +89,7 @@ function delmarks() {
 //skip part of video
 function process() {
         delmarks();
-        try {
+        /*try {
                 var curl = location.href; //current url
                 var vID = curl.match(/v\=(.{11})/); //regex for ID
 
@@ -118,7 +118,7 @@ function process() {
                         });
 
                 }
-        } catch (e) {}
+        } catch (e) {}*/
         delmarks();
 }
 
