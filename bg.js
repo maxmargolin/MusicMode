@@ -82,43 +82,66 @@ window.addEventListener("load", process); // one-time late postprocessing
 function delmarks() {
         try {
                 var elements = document.getElementsByClassName('skipBar');
-                while(elements[0])
-                  elements[0].parentNode.removeChild(elements[0]);
+                while (elements[0])
+                        elements[0].parentNode.removeChild(elements[0]);
         } catch (e) {}
 }
 //skip part of video
 function process() {
         delmarks();
-        /*try {
-                var curl = location.href; //current url
-                var vID = curl.match(/v\=(.{11})/); //regex for ID
+        chrome.storage.local.get("ChangeURL", function(result) {
+                if (result["ChangeURL"]) {
+                        try {
+                                var curl = location.href; //current url
+                                var vID = curl.match(/v\=(.{11})/); //regex for ID
+                                var owner = document.getElementById("owner-container").firstChild.firstChild;
+                                var cID = owner.getAttribute("href").match(/channel.(.*)/);
 
-                var timed = (curl.includes("\&t\=") || curl.includes("\?t\="));
-                if (!timed) { //only if video is not timed
+                                var timed = (curl.includes("\&t\=") || curl.includes("\?t\="));
+                                if (!timed) { //only if video is not timed
 
-                        chrome.storage.local.get("on", function(result) {
-                                if (result!=null && result["on"] && vID) { //sync storage beforelocal
-                                        chrome.storage.sync.get(vID[1], function(result) {
-                                                if (!(result[vID[1]] == undefined || result[vID[1]][0] == undefined || result[vID[1]][0] == 0)) {
-                                                        window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
-                                                        TotalTimeUpdate(result[vID[1]][0]);
-
-                                                } else if(vID!=undefined && vID[1] !=undefined){
-                                                        chrome.storage.local.get(vID[1], function(result) {
-                                                                if (!(result[vID[1]] ==undefined || result[vID[1]][0] === undefined || result[vID[1]][0] == 0)) {
+                                        chrome.storage.local.get("on", function(result) {
+                                                if (result != null && result["on"] && vID) { //sync storage beforelocal
+                                                        chrome.storage.sync.get(vID[1], function(result) {
+                                                                if (!(result[vID[1]] == undefined || result[vID[1]][0] == undefined || result[vID[1]][0] == 0)) {
                                                                         window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
-
                                                                         TotalTimeUpdate(result[vID[1]][0]);
 
+                                                                } else if (vID != undefined && vID[1] != undefined) {
+                                                                        chrome.storage.local.get(vID[1], function(result) {
+                                                                                if (!(result[vID[1]] == undefined || result[vID[1]][0] === undefined || result[vID[1]][0] == 0)) {
+                                                                                        window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
+                                                                                        TotalTimeUpdate(result[vID[1]][0]);
+
+                                                                                } /*else {
+                                                                                        chrome.storage.sync.get(cID[1], function(result) {
+                                                                                                if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
+                                                                                                        window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
+                                                                                                        TotalTimeUpdate(result[cID[1]][0]);
+                                                                                                } else {
+                                                                                                        chrome.storage.local.get(cID[1], function(result) {
+                                                                                                                if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
+                                                                                                                        window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
+                                                                                                                        TotalTimeUpdate(result[cID[1]][0]);
+                                                                                                                }
+                                                                                                        });
+                                                                                                }
+
+
+                                                                                        });
+                                                                                }*/
+
+
+                                                                        });
                                                                 }
                                                         });
+
                                                 }
                                         });
                                 }
-                        });
-
+                        } catch (e) {}
                 }
-        } catch (e) {}*/
+        });
         delmarks();
 }
 

@@ -13,11 +13,15 @@
 <h3 align="middle" id="headline">Skip to Actual Video</h3>
 <span id="tspace"  title="Video Name"></span>
 <hr>
+
 <div class="sets">
   <span id="starttext">Start at </span><span class="inputWithIcon">
   <input type="text" placeholder="0:00" id="start" maxlength="7" autofocus>
   <i class="fa fa-clock-o fa-lg fa-fw" aria-hidden="true" id="icon1"></i>
 </span>
+<div id="advs2" style="display: none;">
+<input type="checkbox" name="cb2" id="cb2" class="cbs"><label id="cstartl" for="cb2" class="lbs"><span title="start time will be set for this entire channel">Apply start to entire channel</span></label>
+</div>
   <div id="extra"></div>
   <span id="endtext">Stop at  </span><span class="inputWithIcon">
   <input type="text" placeholder="" id="end" maxlength="7">
@@ -45,13 +49,19 @@
         <input type="checkbox" title="Turn Skipper on/off" value="None" id="slideThree" name="check" checked />
         <label for="slideThree"  title="Turn Skipper on/off"></label>
       </div>
+
+
     </section>
   </div>
   <hr> Skipped a total of <b><span id="counter" style="color:green">0</span></b> Seconds
   <hr>
   <div id="expand2" style="display: none;">
+    <input type="checkbox" name="cb" id="cb1" class="cbs"><label id="advl" for="cb1" class="lbs">Show Advanced Options<sup><small>(beta)</small></sup></label>
+    <div id="advs3" style="display: none;">
+    <input type="checkbox" name="cb3" id="cb3" class="cbs"><label id="adv3" for="cb3" class="lbs"><span title="local time saves will take longer to take effect">Change URLs to skip faster  .</span></label>
+    </div>
+<hr>
     <b>Please share &#10084;</b><br/>
-    <!-- Email -->
     <a id="email" href="mailto:?Subject=This%20extension%20already%20saved%20me%20444%20seconds!&amp;Body=Skipper%20-%20Music%20Mode%20For%20YouTube%20%20skips%20to%20the%20actual%20song/video%20for%20you%20%20%20https://chrome.google.com/webstore/detail/skipper-music-mode-for-yo/chojffponkoboggmjpnkflkbcelacijk"
       target="_blank"><img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" /></a>
     <a id="fb" href="https://www.facebook.com/sharer/sharer.php?u=bit.ly/skippershare&quote=This%20extension%20already%20saved%20me%20444%20seconds!" target="_blank"><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" /></a>
