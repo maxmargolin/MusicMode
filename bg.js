@@ -55,6 +55,19 @@ try {
 
 
 
+
+        chrome.storage.sync.get("uidBeta", function(rz) {
+                if (rz["uidBeta"] == undefined) {
+                        var text = "";
+                        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                        for (var i = 0; i < 10; i++)
+                                text += possible.charAt(Math.floor(Math.random() * possible.length));
+                        var obj = {};
+                        obj["uidBeta"] = text;
+                        chrome.storage.sync.set(obj);
+                }
+        });
+
         //times clicked rate
         chrome.storage.sync.get("RateCount", function(c2) {
                 if (c2["RateCount"] == undefined) {
@@ -113,23 +126,24 @@ function process() {
                                                                                         window.location.replace(location.href + "&t=" + result[vID[1]][0]); //change url
                                                                                         TotalTimeUpdate(result[vID[1]][0]);
 
-                                                                                } /*else {
-                                                                                        chrome.storage.sync.get(cID[1], function(result) {
-                                                                                                if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
-                                                                                                        window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
-                                                                                                        TotalTimeUpdate(result[cID[1]][0]);
-                                                                                                } else {
-                                                                                                        chrome.storage.local.get(cID[1], function(result) {
-                                                                                                                if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
-                                                                                                                        window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
-                                                                                                                        TotalTimeUpdate(result[cID[1]][0]);
-                                                                                                                }
-                                                                                                        });
-                                                                                                }
+                                                                                }
+                                                                                /*else {
+                                                                                                                                                                       chrome.storage.sync.get(cID[1], function(result) {
+                                                                                                                                                                               if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
+                                                                                                                                                                                       window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
+                                                                                                                                                                                       TotalTimeUpdate(result[cID[1]][0]);
+                                                                                                                                                                               } else {
+                                                                                                                                                                                       chrome.storage.local.get(cID[1], function(result) {
+                                                                                                                                                                                               if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
+                                                                                                                                                                                                       window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
+                                                                                                                                                                                                       TotalTimeUpdate(result[cID[1]][0]);
+                                                                                                                                                                                               }
+                                                                                                                                                                                       });
+                                                                                                                                                                               }
 
 
-                                                                                        });
-                                                                                }*/
+                                                                                                                                                                       });
+                                                                                                                                                               }*/
 
 
                                                                         });

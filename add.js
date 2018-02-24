@@ -405,20 +405,28 @@ window.onload = function() {
                                         if (newStart == 0)
                                                 sScore = 4;
                                         var score = vScore * 6 + sScore * 4;
-                                        firebase.database().ref("S " + score + " " + currentID).set({
-                                                times: arr
-                                                //version: 1
-                                                //sCount: saves,
-                                                //rCount: rates,
-                                                //userTT: tt
+                                        var userID = "x";
+                                        chrome.storage.sync.get("uidBeta", function(res) {
+                                                userID = res["uidBeta"];
+                                                firebase.database().ref("/times/" + score + " " + currentID).set({
+                                                        times: arr,
+                                                        uid: userID
+                                                        //version: 1
+                                                        //sCount: saves,
+                                                        //rCount: rates,
+                                                        //userTT: tt
+                                                });
+                                                score += 10; // channel bonus
+                                                if (document.getElementById("cb2").checked) {
+                                                        firebase.database().ref("/times/CH " + score + " " + currentID).set({
+                                                                times: arr,
+                                                                uid: userID
+                                                        });
+                                                }
                                         });
 
-                                        score += 10; // channel bonus
-                                        if (document.getElementById("cb2").checked) {
-                                                firebase.database().ref("CH " + score + " " + currentID).set({
-                                                        times: arr
-                                                });
-                                        }
+
+
                                 } catch (err) {}
                 });
 

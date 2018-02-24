@@ -66,13 +66,12 @@ input[type=text]:focus {
 
 .slideThree:after {
   content: 'OFF';
-  color: #000;
+  color: Red;
   position: absolute;
   right: 10px;
   z-index: 0;
   font: 12px/26px Arial, sans-serif;
   font-weight: bold;
-  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
 }
 
 .slideThree:before {
@@ -319,6 +318,9 @@ a:visited {
   color: black;
 }
 
+#adv3{
+  line-height: 1.75;
+}
 
 .cbs + .lbs::after {
   -webkit-transform: scale(0);
