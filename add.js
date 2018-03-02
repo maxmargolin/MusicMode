@@ -5,6 +5,7 @@ window.onload = function() {
         var InnerIndex = 1;
 
         var currentID = "default";
+        var videoLength = "default";
         var currentChannelID = "cdefault";
         chrome.tabs.query({
                 active: true,
@@ -14,6 +15,7 @@ window.onload = function() {
                         req: "id"
                 }, function(response) { //ask for information for this page
 
+                        videoLength = response.vLength;
                         currentID = response.cvID;
                         currentChannelID = response.ccID;
                         try {
@@ -42,7 +44,7 @@ window.onload = function() {
 
                         // sync storage before local
                         chrome.storage.sync.get(currentID, function(result) {
-                                var localEnd = true;
+                                var lookForEnd = true;
                                 var lookForStart = true;
                                 var localInner = true;
                                 try {
@@ -56,13 +58,11 @@ window.onload = function() {
                                         localInner = !(ShowInnerSkips(result[currentID]));
                                         if (end != undefined && end != "0") {
                                                 document.getElementById('end').value = ToTime(end);
-                                                localEnd = false;
+                                                lookForEnd = false;
                                         }
                                 } catch (err) {}
 
                                 chrome.storage.local.get(currentID, function(sresult) {
-
-
                                         if (localInner && (sresult[currentID] != undefined && sresult[currentID].length > 2)) {
                                                 ShowInnerSkips(sresult[currentID]);
                                         }
@@ -76,39 +76,75 @@ window.onload = function() {
                                                         }
                                                 } catch (err) {}
                                         }
-                                        if (localEnd) {
+                                        if (lookForEnd) {
                                                 try {
                                                         if ((sresult[currentID].length - 1) % 2 == 1)
                                                                 document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
+                                                        lookForEnd = false;
                                                 } catch (err) {}
                                         }
                                 });
-                                if (lookForStart) { //look for channel start
+
+
+
+
+
+
+                                // channel times
+
+
+                                if (lookForStart || lookForEnd) { //look for channel start/end - synced
 
                                         chrome.storage.sync.get(currentChannelID, function(scresult) {
                                                 if (scresult != undefined) {
                                                         try {
-                                                                var start = scresult[currentChannelID][0];
-                                                                if (start != undefined && start != 0) {
-                                                                        document.getElementById('start').value = ToTime(String(start));
-                                                                        lookForStart = false;
+                                                                if (lookForStart) {
+                                                                        var start = scresult[currentChannelID][0];
+                                                                        if (start != undefined && start != 0) {
+                                                                                document.getElementById('start').value = ToTime(String(start));
+                                                                                lookForStart = false;
+                                                                        }
+                                                                }
+
+                                                                if (lookForEnd) { //look for channel start/end - synced
+                                                                        var end = scresult[currentChannelID][1];
+                                                                        if (end != undefined && end != 0) {
+                                                                                document.getElementById('end').value = ToTime(String(parseInt(videoLength + end)));
+                                                                                lookForEnd = false;
+                                                                        }
                                                                 }
                                                         } catch (err) {}
                                                 }
                                         });
                                 }
-                                if (lookForStart) { //look for channel start local
-                                        chrome.storage.local.get(currentChannelID, function(lcresult) {
-                                                if (lcresult != undefined) {
+
+
+
+                                if (lookForStart || lookForEnd) { //look for channel start/end - local
+
+                                        chrome.storage.local.get(currentChannelID, function(lresult) {
+                                                if (lresult != undefined) {
                                                         try {
-                                                                var start = lcresult[currentChannelID][0];
-                                                                if (lookForStart && start != undefined && start != 0)
-                                                                        document.getElementById('start').value = ToTime(String(start));
+                                                                if (lookForStart) {
+                                                                        var start = lresult[currentChannelID][0];
+                                                                        if (start != undefined && start != 0) {
+                                                                                document.getElementById('start').value = ToTime(String(start));
+                                                                                lookForStart = false;
+                                                                        }
+                                                                }
+
+                                                                if (lookForEnd) { //look for channel start/end - synced
+                                                                        var end = lresult[currentChannelID][1];
+                                                                        if (end != undefined && end != 0) {
+                                                                                document.getElementById('end').value = ToTime(String(parseInt(videoLength + end)));
+                                                                                lookForEnd = false;
+                                                                        }
+                                                                }
                                                         } catch (err) {}
                                                 }
                                         });
-
                                 }
+
 
                         });
                 });
@@ -213,6 +249,7 @@ window.onload = function() {
                 if (result["adv"]) { //advanced on
                         document.getElementById("advs2").style.display = "block";
                         document.getElementById("advs3").style.display = "block";
+                        document.getElementById("advs4").style.display = "block";
                 }
         });
 
@@ -251,26 +288,7 @@ window.onload = function() {
                 }
         });
 
-        var advcb = document.querySelector("input[name=cb]");
-        advcb.addEventListener('change', function() {
-                var obj = {};
-                if (this.checked) {
-                        document.getElementById("advs2").style.display = "block";
-                        document.getElementById("advs3").style.display = "block";
-                        obj["adv"] = true;
-                        chrome.storage.local.set(obj);
-                } else {
-                        document.getElementById("cb2").checked = false;
-                        document.getElementById("cb3").checked = false;
-                        document.getElementById("advs2").style.display = "none";
-                        document.getElementById("advs3").style.display = "none";
-                        var objurl = {};
-                        objurl["ChangeURL"] = false;
-                        chrome.storage.local.set(objurl);
-                        obj["adv"] = false;
-                        chrome.storage.local.set(obj);
-                }
-        });
+
 
 
         var urlcb = document.querySelector("input[name=cb3]");
@@ -319,6 +337,37 @@ window.onload = function() {
                 firebase.initializeApp(config);
         } catch (err) {}
 
+        var advcb = document.querySelector("input[name=cb]");
+        advcb.addEventListener('change', function() {
+                var obj = {};
+                if (this.checked) {
+                        document.getElementById("advs2").style.display = "block";
+                        document.getElementById("advs3").style.display = "block";
+                        document.getElementById("advs4").style.display = "block";
+                        obj["adv"] = true;
+                        chrome.storage.local.set(obj);
+                        chrome.storage.sync.get("uidBeta", function(res) {
+                                userID = res["uidBeta"];
+                                firebase.database().ref("/tried_advanced/" + userID).set({
+                                        "in": "alpha"
+                                });
+                        });
+                        //xko
+                } else {
+                        document.getElementById("cb2").checked = false; //channel start
+                        document.getElementById("cb4").checked = false; //channel end
+                        document.getElementById("cb3").checked = false;
+                        document.getElementById("advs2").style.display = "none";
+                        document.getElementById("advs3").style.display = "none";
+                        document.getElementById("advs4").style.display = "none";
+                        var objurl = {};
+                        objurl["ChangeURL"] = false;
+                        chrome.storage.local.set(objurl);
+                        obj["adv"] = false;
+                        chrome.storage.local.set(obj);
+                }
+        });
+
 
         document.getElementById('setButton').onclick = function() {
                 var newStart = Math.max(ToSeconds($('#start').val()), 0);
@@ -362,11 +411,21 @@ window.onload = function() {
                 obj[currentID] = arr;
                 chrome.storage.sync.set(obj);
 
-                if (document.getElementById("cb2").checked) {
+                var somethingChecked = (document.getElementById("cb2").checked || document.getElementById("cb4").checked);
+                if (somethingChecked) {
+
+                        if (!document.getElementById("cb4").checked) //end
+                                newEnd = 0;
+                        if (!document.getElementById("cb2").checked) //start
+                                newStart = 0;
                         var cobj = {};
-                        cobj[currentChannelID] = [newStart];
+                        if (!newEnd == 0)
+                                newEnd = parseInt(newEnd - videoLength);
+                        cobj[currentChannelID] = [newStart, newEnd];
                         chrome.storage.sync.set(cobj);
+
                 }
+
 
                 chrome.tabs.query({
                         active: true,
@@ -381,9 +440,12 @@ window.onload = function() {
 
 
                 chrome.storage.sync.get("RateCount", function(result) {
+
                         rates = result["RateCount"];
                         //send
-                        if ((newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
+                        if (somethingChecked || (newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
+
+
                                 try {
                                         //stats
                                         var saves = 0;
@@ -396,7 +458,6 @@ window.onload = function() {
 
 
                                         });
-
 
                                         var vScore = Math.floor(Math.log10(parseFloat(views.replace(/,/g, ''))));
                                         var sScore = Math.floor(Math.log2(newStart));
@@ -417,9 +478,11 @@ window.onload = function() {
                                                         //userTT: tt
                                                 });
                                                 score += 10; // channel bonus
-                                                if (document.getElementById("cb2").checked) {
+                                                if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
+
                                                         firebase.database().ref("/times/CH " + score + " " + currentID).set({
-                                                                times: arr,
+                                                                start: newStart,
+                                                                end: newEnd,
                                                                 uid: userID
                                                         });
                                                 }

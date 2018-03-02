@@ -16,14 +16,16 @@ chrome.runtime.onMessage.addListener(
                         var vID = curl.match(/v\=(.{11})/);
                         var owner = document.getElementById("owner-container").firstChild.firstChild;
                         var cID = owner.getAttribute("href").match(/channel.(.*)/);
-
+                        let video = document.querySelector("video.html5-main-video");
+                        let totalDuration = video.duration;
                         var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].textContent; //title
                         var vs = (document.getElementsByClassName('view-count')[0]).innerHTML.match(/((\d|,)+)/);
                         sendResponse({
                                 cvID: vID[1],
                                 ccID: cID[1],
                                 name: title,
-                                views: vs[0]
+                                views: vs[0],
+                                vLength: totalDuration
 
                         });
 
@@ -86,6 +88,8 @@ function act(id, data, video, totalDuration, currentTime, checkStart, checkMid, 
                 }
 
                 var end = data[id[1]][data[id[1]].length - 1];
+                if (end < 0)
+                        end = parseInt(video.duration + end); // end skip calculated to this specific video,remember end is negative
                 if (checkEnd && end > checkStart && (data[id[1]].length % 2) == 0) {
                         ShowSkipOnBar(end, totalDuration);
                         if (currentTime >= end && Math.floor(currentTime < totalDuration)) {
@@ -184,7 +188,7 @@ function InSkipper() {
                                                                 chrome.storage.local.get(cID[1], function(rez) {
                                                                         // run on local cID
                                                                         if (!foundSyncedChannelData)
-                                                                          act(cID, rez, video, totalDuration, currentTime, localStart, localMid, localEnd);
+                                                                                act(cID, rez, video, totalDuration, currentTime, localStart, localMid, localEnd);
                                                                 });
                                                         }
 
