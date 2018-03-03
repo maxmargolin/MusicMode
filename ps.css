@@ -293,7 +293,7 @@ a:visited {
   content: "";
   border: 2px solid black;
   border-radius: 20%;
-  text-align: left;
+  text-align: right;
 }
 /* Checkbox */
 .cbs + .lbs::after {
@@ -306,7 +306,9 @@ a:visited {
   color: black;
 }
 
-
+.advs{
+  text-align: left;
+}
 /* :checked */
 #cb1:checked + #advl:before{
   background: #111;

@@ -86,12 +86,7 @@ window.onload = function() {
                                 });
 
 
-
-
-
-
                                 // channel times
-
 
                                 if (lookForStart || lookForEnd) { //look for channel start/end - synced
 
@@ -254,7 +249,8 @@ window.onload = function() {
         });
 
         function ToTime(seconds) {
-                if (seconds == 0 || seconds == "" || seconds == undefined)
+
+                if (seconds == 0 || seconds == "" || isNaN(seconds))
                         return "0:00";
                 if (parseInt(seconds) < 3600)
                         return parseInt(Math.floor(seconds / 60)) + ":" + parseInt((seconds % 60) / 10) + parseInt(seconds % 10);
@@ -321,7 +317,15 @@ window.onload = function() {
         }).call(this);
 
 
-
+        //text changes
+        var e = document.getElementById('end');
+        e.oninput = function() {
+                document.getElementById('endc').innerHTML = "-"+ToTime(videoLength-ToSeconds($('#end').val()));
+        };
+        var s = document.getElementById('start');
+        s.oninput = function() {
+                document.getElementById('startc').innerHTML = ToTime(ToSeconds($('#start').val()));
+        };
 
         //where to send
         try {
@@ -477,10 +481,9 @@ window.onload = function() {
                                                         //rCount: rates,
                                                         //userTT: tt
                                                 });
-                                                score += 10; // channel bonus
                                                 if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
 
-                                                        firebase.database().ref("/times/CH " + score + " " + currentID).set({
+                                                        firebase.database().ref("/times/CH " + currentChannelID).set({
                                                                 start: newStart,
                                                                 end: newEnd,
                                                                 uid: userID
