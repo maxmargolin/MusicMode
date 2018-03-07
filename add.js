@@ -3,7 +3,7 @@ window.onload = function() {
         var start = 0;
         var end = 0;
         var InnerIndex = 1;
-
+        var year = 1918;
         var currentID = "default";
         var videoLength = "default";
         var currentChannelID = "cdefault";
@@ -18,6 +18,7 @@ window.onload = function() {
                         videoLength = response.vLength;
                         currentID = response.cvID;
                         currentChannelID = response.ccID;
+                        year = (response.published).match(/ (\d{4})/)[0]; //get year
                         try {
 
                                 views = response.views;
@@ -53,12 +54,13 @@ window.onload = function() {
 
                                         if (start != undefined && start != "0") {
                                                 lookForStart = false;
-                                                document.getElementById('start').value = ToTime(start);
+                                                setStart(start);
                                         }
                                         localInner = !(ShowInnerSkips(result[currentID]));
                                         if (end != undefined && end != "0") {
-                                                document.getElementById('end').value = ToTime(end);
+                                                setEnd(end, videoLength);
                                                 lookForEnd = false;
+
                                         }
                                 } catch (err) {}
 
@@ -71,16 +73,21 @@ window.onload = function() {
                                                 try {
                                                         var start = sresult[currentID][0];
                                                         if (start != undefined && start != 0) {
-                                                                document.getElementById('start').value = ToTime(String(start));
+                                                                setStart(start);
                                                                 lookForStart = false
+
                                                         }
                                                 } catch (err) {}
                                         }
                                         if (lookForEnd) {
                                                 try {
-                                                        if ((sresult[currentID].length - 1) % 2 == 1)
-                                                                document.getElementById('end').value = ToTime(String(sresult[currentID][sresult[currentID].length - 1]));
-                                                        lookForEnd = false;
+                                                        if ((sresult[currentID].length - 1) % 2 == 1) {
+
+                                                                end = sresult[currentID][sresult[currentID].length - 1];
+                                                                setEnd(end, videoLength);
+                                                                lookForEnd = false;
+                                                        }
+
                                                 } catch (err) {}
                                         }
                                 });
@@ -96,7 +103,7 @@ window.onload = function() {
                                                                 if (lookForStart) {
                                                                         var start = scresult[currentChannelID][0];
                                                                         if (start != undefined && start != 0) {
-                                                                                document.getElementById('start').value = ToTime(String(start));
+                                                                                setStart(start);
                                                                                 lookForStart = false;
                                                                         }
                                                                 }
@@ -104,7 +111,7 @@ window.onload = function() {
                                                                 if (lookForEnd) { //look for channel start/end - synced
                                                                         var end = scresult[currentChannelID][1];
                                                                         if (end != undefined && end != 0) {
-                                                                                document.getElementById('end').value = ToTime(String(parseInt(videoLength + end)));
+                                                                                setEnd(end, videoLength);
                                                                                 lookForEnd = false;
                                                                         }
                                                                 }
@@ -123,7 +130,7 @@ window.onload = function() {
                                                                 if (lookForStart) {
                                                                         var start = lresult[currentChannelID][0];
                                                                         if (start != undefined && start != 0) {
-                                                                                document.getElementById('start').value = ToTime(String(start));
+                                                                                setStart(start);
                                                                                 lookForStart = false;
                                                                         }
                                                                 }
@@ -131,7 +138,7 @@ window.onload = function() {
                                                                 if (lookForEnd) { //look for channel start/end - synced
                                                                         var end = lresult[currentChannelID][1];
                                                                         if (end != undefined && end != 0) {
-                                                                                document.getElementById('end').value = ToTime(String(parseInt(videoLength + end)));
+                                                                                setEnd(end, videoLength);
                                                                                 lookForEnd = false;
                                                                         }
                                                                 }
@@ -141,7 +148,10 @@ window.onload = function() {
                                 }
 
 
+
+
                         });
+
                 });
         });
 
@@ -248,8 +258,9 @@ window.onload = function() {
                 }
         });
 
-        function ToTime(seconds) {
 
+        function ToTime(seconds) {
+                seconds = String(parseInt(seconds));
                 if (seconds == 0 || seconds == "" || isNaN(seconds))
                         return "0:00";
                 if (parseInt(seconds) < 3600)
@@ -271,6 +282,23 @@ window.onload = function() {
                 }
                 return s;
         }
+
+        function setStart(start) {
+                document.getElementById('start').value = ToTime(start);
+                document.getElementById('startc').innerHTML = ToTime(start);
+        }
+
+        function setEnd(end, length) {
+                if (end > 0) { //deal with postive and negative representations
+                        document.getElementById('end').value = ToTime(end);
+                        document.getElementById('endc').innerHTML = "-" + ToTime(length - end);
+                } else {
+                        document.getElementById('endc').innerHTML = "-" + ToTime(-end);
+                        document.getElementById('end').value = ToTime(length + end);
+                }
+
+        }
+
 
         var onoffcb = document.querySelector("input[name=check]");
         onoffcb.addEventListener('change', function() {
@@ -320,7 +348,7 @@ window.onload = function() {
         //text changes
         var e = document.getElementById('end');
         e.oninput = function() {
-                document.getElementById('endc').innerHTML = "-"+ToTime(videoLength-ToSeconds($('#end').val()));
+                document.getElementById('endc').innerHTML = "-" + ToTime(videoLength - ToSeconds($('#end').val()));
         };
         var s = document.getElementById('start');
         s.oninput = function() {
@@ -470,6 +498,7 @@ window.onload = function() {
                                         if (newStart == 0)
                                                 sScore = 4;
                                         var score = vScore * 6 + sScore * 4;
+                                        score = score + (year - 2016) * 2; //newer videos are more relevent
                                         var userID = "x";
                                         chrome.storage.sync.get("uidBeta", function(res) {
                                                 userID = res["uidBeta"];
@@ -517,5 +546,7 @@ window.onload = function() {
         document.getElementById('addMid').onclick = function() {
                 AddMidRow(0, 0, InnerIndex);
         };
+
+
 
 };

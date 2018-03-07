@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(
                         var curl = location.href;
                         var vID = curl.match(/v\=(.{11})/);
                         var owner = document.getElementById("owner-container").firstChild.firstChild;
+                        var date = document.getElementsByClassName("date")[0].textContent;
                         var cID = owner.getAttribute("href").match(/channel.(.*)/);
                         let video = document.querySelector("video.html5-main-video");
                         let totalDuration = video.duration;
@@ -25,7 +26,8 @@ chrome.runtime.onMessage.addListener(
                                 ccID: cID[1],
                                 name: title,
                                 views: vs[0],
-                                vLength: totalDuration
+                                vLength: totalDuration,
+                                published: date
 
                         });
 
@@ -187,7 +189,9 @@ function InSkipper() {
                                                         if (!foundSyncedChannelData) {
                                                                 chrome.storage.local.get(cID[1], function(rez) {
                                                                         // run on local cID
-                                                                        if (!foundSyncedChannelData)
+                                                                        var year = (document.getElementsByClassName("date")[0].textContent).match(/ (\d{4})/)[0];
+                                                                        var totalVideoTime=document.querySelector("video.html5-main-video").duration;
+                                                                        if (!foundSyncedChannelData && year >= 2012 &&totalVideoTime>120 &&totalVideoTime<1200) //only 2012 and after for public channel skips
                                                                                 act(cID, rez, video, totalDuration, currentTime, localStart, localMid, localEnd);
                                                                 });
                                                         }

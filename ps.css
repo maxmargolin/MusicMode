@@ -306,7 +306,7 @@ a:visited {
   color: black;
 }
 
-.advs{
+.advs,#expand2{
   text-align: left;
 }
 /* :checked */

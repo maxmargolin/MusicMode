@@ -127,24 +127,6 @@ function process() {
                                                                                         TotalTimeUpdate(result[vID[1]][0]);
 
                                                                                 }
-                                                                                /*else {
-                                                                                                                                                                       chrome.storage.sync.get(cID[1], function(result) {
-                                                                                                                                                                               if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
-                                                                                                                                                                                       window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
-                                                                                                                                                                                       TotalTimeUpdate(result[cID[1]][0]);
-                                                                                                                                                                               } else {
-                                                                                                                                                                                       chrome.storage.local.get(cID[1], function(result) {
-                                                                                                                                                                                               if (!(result[cID[1]] == undefined || result[cID[1]][0] === undefined || result[cID[1]][0] == 0)) {
-                                                                                                                                                                                                       window.location.replace(location.href + "&t=" + result[cID[1]][0]); //change url
-                                                                                                                                                                                                       TotalTimeUpdate(result[cID[1]][0]);
-                                                                                                                                                                                               }
-                                                                                                                                                                                       });
-                                                                                                                                                                               }
-
-
-                                                                                                                                                                       });
-                                                                                                                                                               }*/
-
 
                                                                         });
                                                                 }
