@@ -80,7 +80,7 @@ try {
 
 
 
-//cach the change
+//caאch the change
 window.addEventListener("spfdone", process); // old youtube design
 window.addEventListener("yt-navigate-start", process); // new youtube design
 
