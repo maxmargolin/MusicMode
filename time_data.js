@@ -1103,7 +1103,36 @@ var data = [
         ["UzCs3AQS-GU",0,184],
         ["2aH6Q3BWmY8",0,217],
         ["4qqOejeVTwU",0,182],
-        ["UCb3tJ5NKw7mDxyaQ73mwbRg",4]
+        ["UCb3tJ5NKw7mDxyaQ73mwbRg",4],
+        ["8OARiNiJ_w8",48,250],
+        ["Ph54wQG8ynk",10],
+        ["UCVGVbOl6F5rGF4wSYS6Y5yQ",13],
+        ["ckM97kSinLw",0,251],
+        ["5cINJwaAn4Y",0,214],
+        ["EVSdSa72Dxs",0,193],
+        ["q7IxWpgHyXs",0,470],
+        ["6Dakd7EIgBE",0,241],
+        ["fz4MzJTeL0c",0,290],
+        ["1gCulUDvALM",0,245],
+        ["UCmKurapML4BF9Bjtj4RbvXw",0,-12],
+        ["WZjFMj7OHTw",0,240],
+        ["fzv2rojOf8E",0,230],
+        ["DpjO44jJ4Mc",0,241],
+        ["dzKpFCA9vJQ",0,206],
+        ["Ts2SIQ5O-K4",0,195],
+        ["UC2y3CMu4X5EX5IjrXqZEQKw",0,-24],
+        ["UCTev4RNBiu6lqtx8z1e87fQ",0,-30],
+        ["1L8zGfKDCCY",0,156],
+        ["UCTFuNYrqAcsmSjgqYMvxOqw",0,-30],
+        ["UCR-ENZ64WL1vB8KU4YzdmTQ",0,-15],
+        ["HyBx6H5Q6mA",0,200],
+        ["n-t-M9Jnve8",0,212],
+        ["UCORIeT1hk6tYBuntEXsguLg",0,-5],
+        ["UCNk8qWYDE33niA1ycBBtYaw",0,-30],
+        ["UC40gs0opj389ohjLnJIAJzA",0,-10]
+
+
+
 
 ];
 var obj = {};
