@@ -261,7 +261,7 @@ window.onload = function() {
 
         function ToTime(seconds) {
                 seconds = String(parseInt(seconds));
-                if (seconds == 0 || seconds == "" || isNaN(seconds))
+                if (seconds <= 0 || isNaN(seconds))
                         return "0:00";
                 if (parseInt(seconds) < 3600)
                         return parseInt(Math.floor(seconds / 60)) + ":" + parseInt((seconds % 60) / 10) + parseInt(seconds % 10);
@@ -289,7 +289,11 @@ window.onload = function() {
         }
 
         function setEnd(end, length) {
-                if (end > 0) { //deal with postive and negative representations
+                if (end == 0) {
+
+                        document.getElementById('end').value = "0:00";
+                        document.getElementById('endc').innerHTML = "-" + "0:00";
+                } else if (end > 0) { //deal with postive and negative representations
                         document.getElementById('end').value = ToTime(end);
                         document.getElementById('endc').innerHTML = "-" + ToTime(length - end);
                 } else {
@@ -348,7 +352,11 @@ window.onload = function() {
         //text changes
         var e = document.getElementById('end');
         e.oninput = function() {
-                document.getElementById('endc').innerHTML = "-" + ToTime(videoLength - ToSeconds($('#end').val()));
+                endText = $('#end').val();
+                if (endText == "0")
+                        document.getElementById('endc').innerHTML = "-0:00";
+                else
+                        document.getElementById('endc').innerHTML = "-" + ToTime(videoLength - ToSeconds(endText));
         };
         var s = document.getElementById('start');
         s.oninput = function() {
@@ -445,16 +453,24 @@ window.onload = function() {
 
                 var somethingChecked = (document.getElementById("cb2").checked || document.getElementById("cb4").checked);
                 if (somethingChecked) {
+                        chrome.storage.sync.get(currentChannelID, function(rez) {
+                                if (!document.getElementById("cb4").checked) //end
+                                        newEnd = 0; // chose not to set
+                                if (!document.getElementById("cb2").checked) //start
+                                        newStart = 0; //chose not to set
 
-                        if (!document.getElementById("cb4").checked) //end
-                                newEnd = 0;
-                        if (!document.getElementById("cb2").checked) //start
-                                newStart = 0;
-                        var cobj = {};
-                        if (!newEnd == 0)
-                                newEnd = parseInt(newEnd - videoLength);
-                        cobj[currentChannelID] = [newStart, newEnd];
-                        chrome.storage.sync.set(cobj);
+                                if (rez[currentChannelID] != undefined) { //but if there is an old value
+                                        if (!document.getElementById("cb4").checked) //end
+                                                newEnd = rez[currentChannelID][1]; //oldend
+                                        if (!document.getElementById("cb2").checked) //start
+                                                newStart = rez[currentChannelID][0]; //oldstart
+                                }
+                                var cobj = {};
+                                if (!newEnd == 0)
+                                        newEnd = parseInt(newEnd - videoLength);
+                                cobj[currentChannelID] = [newStart, newEnd];
+                                chrome.storage.sync.set(cobj);
+                        });
 
                 }
 
@@ -477,7 +493,6 @@ window.onload = function() {
                         //send
                         if (somethingChecked || (newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
 
-
                                 try {
                                         //stats
                                         var saves = 0;
@@ -490,29 +505,30 @@ window.onload = function() {
 
 
                                         });
-
-                                        var vScore = Math.floor(Math.log10(parseFloat(views.replace(/,/g, ''))));
-                                        var sScore = Math.floor(Math.log2(newStart));
+                                        views = parseFloat(views.replace(/,/g, ''));
+                                        var vScore = Math.floor(Math.log10(views));
+                                        var totalTime = newStart + (pointB - pointA) + (pointD - pointC) + (pointF - pointE) + (videoLength - newEnd); //not using max(_,) cuz those SHOULD have a nad rating
+                                        var sScore = Math.floor(Math.log2(totalTime));
                                         if (sScore > 10)
                                                 sScore = 3;
-                                        if (newStart == 0)
-                                                sScore = 4;
                                         var score = vScore * 6 + sScore * 4;
                                         score = score + (year - 2016) * 2; //newer videos are more relevent
                                         var userID = "x";
                                         chrome.storage.sync.get("uidBeta", function(res) {
                                                 userID = res["uidBeta"];
-                                                firebase.database().ref("/times/" + score + " " + currentID).set({
+                                                firebase.database().ref("/timesx/" + score + " " + currentID).set({
                                                         times: arr,
-                                                        uid: userID
-                                                        //version: 1
-                                                        //sCount: saves,
-                                                        //rCount: rates,
-                                                        //userTT: tt
+                                                        uid: userID,
+                                                        vid: currentID,
+                                                        points: score,
+                                                        sCount: saves,
+                                                        rCount: rates,
+                                                        userTT: tt,
+                                                        views: views
                                                 });
                                                 if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
 
-                                                        firebase.database().ref("/times/CH " + currentChannelID).set({
+                                                        firebase.database().ref("/timesx/CH " + currentChannelID).set({
                                                                 start: newStart,
                                                                 end: newEnd,
                                                                 uid: userID
