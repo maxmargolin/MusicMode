@@ -532,7 +532,7 @@ window.onload = function() {
                                                         firebase.database().ref("/times/CH " + currentChannelID).set({
                                                                 start: newStart,
                                                                 end: newEnd,
-            c                                                    uid: userID
+                                                                uid: userID
                                                         });
                                                 }
                                         });
