@@ -228,7 +228,7 @@ var data = [
         ["3AtDnEC4zak", 3, 220],
         ["dvf--10EYXw", 3, 210],
         ["YnwfTHpnGLY", 4],
-        ["jofNR_WkoCE", 4],
+        ["jofNR_WkoCE", 4,214],
         ["plDMIAPF6GU", 4],
         ["b6vSf0cA9qY", 4],
         ["Kh2FRFhS7QY", 15],
@@ -359,7 +359,7 @@ var data = [
         ["wd6E24cGDn8", 9, 162, 172],
         ["QbXSZxJitLg", 9],
         ["iP6XpLQM2Cs", 9, 207],
-        ["k2qgadSvNyU", 9],
+        ["k2qgadSvNyU", 9,220],
         ["qku2WZ7aRYw", 9, 52, 80, 146],
         ["3X3xtRNb20s", 9, 200],
         ["bMpFmHSgC4Q", 9],
@@ -1129,7 +1129,26 @@ var data = [
         ["n-t-M9Jnve8",0,212],
         ["UCORIeT1hk6tYBuntEXsguLg",0,-5],
         ["UCNk8qWYDE33niA1ycBBtYaw",0,-30],
-        ["UC40gs0opj389ohjLnJIAJzA",0,-10]
+        ["UC40gs0opj389ohjLnJIAJzA",0,-10],
+        ["UCaA3Cnh8B_jmfTLX9GjIqEw",5],
+        ["UCR0GnnikaKZJAi7r5m-ZTkg",5],
+        ["xpVfcZ0ZcFM",36,98,106,305],
+        ["aZla1ttZHaw",105],
+        ["Txlk7PiHaGk",295,588],
+        ["l82D-qmp4LE",144],
+        ["kLpH1nSLJSs",22],
+        ["fLexgOxsZu0",6],
+        ["eQWG8BVeryU",31],
+        ["dfnCAmr569k",0,246],
+        ["Z9eMk051dYg",36],
+        ["zKCrSN9oXgQ",46,344],
+        ["xYtsL9znopI",38,248],
+        ["dtCxmbFgnrc",84],
+        ["-BQJo3vK8O8",41]
+      
+
+
+
 
 
 

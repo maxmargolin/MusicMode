@@ -516,7 +516,7 @@ window.onload = function() {
                                         var userID = "x";
                                         chrome.storage.sync.get("uidBeta", function(res) {
                                                 userID = res["uidBeta"];
-                                                firebase.database().ref("/timesx/" + score + " " + currentID).set({
+                                                firebase.database().ref("/times/" + score + " " + currentID).set({
                                                         times: arr,
                                                         uid: userID,
                                                         vid: currentID,
@@ -524,14 +524,15 @@ window.onload = function() {
                                                         sCount: saves,
                                                         rCount: rates,
                                                         userTT: tt,
-                                                        views: views
+                                                        views: views,
+                                                        date: Date()
                                                 });
                                                 if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
 
-                                                        firebase.database().ref("/timesx/CH " + currentChannelID).set({
+                                                        firebase.database().ref("/times/CH " + currentChannelID).set({
                                                                 start: newStart,
                                                                 end: newEnd,
-                                                                uid: userID
+            c                                                    uid: userID
                                                         });
                                                 }
                                         });
