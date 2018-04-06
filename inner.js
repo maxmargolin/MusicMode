@@ -65,7 +65,6 @@ function ShowSkipOnBar(aa, bb, color = "a") {
 
 
 function act(id, data, video, totalDuration, currentTime, checkStart, checkMid, checkEnd) {
-
         if (data != undefined && data[id[1]] != undefined && data[id[1]][0] != undefined) {
                 var lstartpoint = data[id[1]][0];
                 //safety
@@ -94,8 +93,8 @@ function act(id, data, video, totalDuration, currentTime, checkStart, checkMid, 
                         end = parseInt(video.duration + end); // end skip calculated to this specific video,remember end is negative
                 if (checkEnd && end > checkStart && (data[id[1]].length % 2) == 0) {
                         ShowSkipOnBar(end, totalDuration);
-                        if (currentTime >= end && Math.floor(currentTime < totalDuration)) {
-                                video.currentTime = Math.ceil(totalDuration);
+                        if (currentTime >= end && currentTime < Math.floor(totalDuration)) {
+                                video.currentTime = totalDuration-0.05; //dont skip to start
                                 TotalTimeUpdate(totalDuration - currentTime);
                         }
                 }

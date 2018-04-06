@@ -514,28 +514,30 @@ window.onload = function() {
                                         var score = vScore * 6 + sScore * 4;
                                         score = score + (year - 2016) * 2; //newer videos are more relevent
                                         var userID = "x";
-                                        chrome.storage.sync.get("uidBeta", function(res) {
-                                                userID = res["uidBeta"];
-                                                firebase.database().ref("/times/" + score + " " + currentID).set({
-                                                        times: arr,
-                                                        uid: userID,
-                                                        vid: currentID,
-                                                        points: score,
-                                                        sCount: saves,
-                                                        rCount: rates,
-                                                        userTT: tt,
-                                                        views: views,
-                                                        date: Date()
-                                                });
-                                                if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
-
-                                                        firebase.database().ref("/times/CH " + currentChannelID).set({
-                                                                start: newStart,
-                                                                end: newEnd,
-                                                                uid: userID
+                                        if (newStart != 9999999) {
+                                                chrome.storage.sync.get("uidBeta", function(res) {
+                                                        userID = res["uidBeta"];
+                                                        firebase.database().ref("/times/" + score + " " + currentID).set({
+                                                                times: arr,
+                                                                uid: userID,
+                                                                vid: currentID,
+                                                                points: score,
+                                                                sCount: saves,
+                                                                rCount: rates,
+                                                                userTT: tt,
+                                                                views: views,
+                                                                date: Date()
                                                         });
-                                                }
-                                        });
+                                                        if (document.getElementById("cb2").checked || document.getElementById("cb4").checked) {
+
+                                                                firebase.database().ref("/times/CH " + currentChannelID).set({
+                                                                        start: newStart,
+                                                                        end: newEnd,
+                                                                        uid: userID
+                                                                });
+                                                        }
+                                                });
+                                        }
 
 
 
