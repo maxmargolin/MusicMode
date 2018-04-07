@@ -449,7 +449,10 @@ window.onload = function() {
                 var obj = {};
                 var arr = [newStart, pointA, pointB, pointC, pointD, pointE, pointF, newEnd];
                 obj[currentID] = arr;
-                chrome.storage.sync.set(obj);
+                try {
+                        chrome.storage.sync.set(obj);
+                } catch (err) {  }
+
 
                 var somethingChecked = (document.getElementById("cb2").checked || document.getElementById("cb4").checked);
                 if (somethingChecked) {
@@ -538,9 +541,6 @@ window.onload = function() {
                                                         }
                                                 });
                                         }
-
-
-
                                 } catch (err) {}
                 });
 
