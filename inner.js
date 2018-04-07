@@ -64,26 +64,36 @@ function ShowSkipOnBar(aa, bb, color = "a") {
 
 
 
-function act(id, data, video, totalDuration, currentTime, checkStart, checkMid, checkEnd) {
+function act(id, data, video, totalDuration, currentTime, toCheck) {
+        toRet = toCheck.slice();
         if (data != undefined && data[id[1]] != undefined && data[id[1]][0] != undefined) {
-                var lstartpoint = data[id[1]][0];
+                var startpoint = data[id[1]][0];
+                if (startpoint > 0) {
+                        toRet[0] = false;
+                }
                 //safety
-                if (checkStart) {
-                        ShowSkipOnBar(0, lstartpoint);
-                        if (currentTime > 0.1 && lstartpoint > 0 && inSkipRange(currentTime, 0) && lstartpoint > 1) {
-                                TotalTimeUpdate(lstartpoint - currentTime);
-                                video.currentTime = lstartpoint;
+                if (toCheck[0]) { //start
+                        ShowSkipOnBar(0, startpoint);
+                        toRet[0] = false;
+                        if (currentTime > 0.05 && startpoint > 0 && inSkipRange(currentTime, 0)) {
+                                video.currentTime = startpoint;
+                                TotalTimeUpdate(startpoint - currentTime);
+
+
                         }
                 }
 
-                if (checkMid) {
+                if (toCheck[1]) { //mid
                         for (var i = 1; i < data[id[1]].length - 1; i += 2) {
+                                toRet[1] = false;
                                 var skipFrom = data[id[1]][i];
                                 var skipTo = data[id[1]][i + 1];
-                                ShowSkipOnBar(skipFrom, skipTo);
-                                if (inSkipRange(currentTime, skipFrom)) {
-                                        video.currentTime = skipTo;
-                                        TotalTimeUpdate(skipTo - currentTime);
+                                if (skipFrom != 0 && skipTo != 0) {
+                                        ShowSkipOnBar(skipFrom, skipTo);
+                                        if (inSkipRange(currentTime, skipFrom)) {
+                                                video.currentTime = skipTo;
+                                                TotalTimeUpdate(skipTo - currentTime);
+                                        }
                                 }
                         }
                 }
@@ -91,14 +101,17 @@ function act(id, data, video, totalDuration, currentTime, checkStart, checkMid, 
                 var end = data[id[1]][data[id[1]].length - 1];
                 if (end < 0)
                         end = parseInt(video.duration + end); // end skip calculated to this specific video,remember end is negative
-                if (checkEnd && end > checkStart && (data[id[1]].length % 2) == 0) {
+                if (toCheck[2] && end > 0 && (data[id[1]].length % 2) == 0) {
+                        toRet[2] = false;
                         ShowSkipOnBar(end, totalDuration);
                         if (currentTime >= end && currentTime < Math.floor(totalDuration)) {
-                                video.currentTime = totalDuration-0.05; //dont skip to start
+                                video.currentTime = totalDuration - 0.05; //dont skip to start
                                 TotalTimeUpdate(totalDuration - currentTime);
                         }
                 }
         }
+
+        return toRet;
 }
 
 function InSkipper() {
@@ -126,51 +139,10 @@ function InSkipper() {
                                 let video = document.querySelector("video.html5-main-video");
                                 let currentTime = video.currentTime; // Fractional, in seconds
                                 let totalDuration = video.duration;
-                                var localStart = true;
-                                var localEnd = true;
-                                var localMid = true;
-                                chrome.storage.sync.get(vID[1], function(result) {
-                                        var startpoint = 0;
-                                        if (result && vID && vID[1] && result[vID[1]])
-                                                startpoint = result[vID[1]][0];
-                                        if (startpoint != 0)
-                                                ShowSkipOnBar(0, startpoint);
-                                        //no need for local start point
-                                        if (startpoint > 0)
-                                                localStart = false;
-                                        //safety
-                                        if (currentTime > 0.03 && startpoint > 0 && inSkipRange(currentTime, 0) && startpoint > 1) {
-                                                TotalTimeUpdate(startpoint - currentTime);
-                                                video.currentTime = startpoint;
-                                        }
+                                var checkStartMidEnd = [true, true, true]; //start mid end
+                                chrome.storage.sync.get(vID[1], function(svRes) {
+                                        checkStartMidEnd = act(vID, svRes, video, totalDuration, currentTime, checkStartMidEnd);
 
-                                        if (result[vID[1]]) {
-                                                for (var i = 1; i < result[vID[1]].length - 1; i += 2) {
-                                                        localMid = false;
-                                                        var skipFrom = result[vID[1]][i];
-                                                        var skipTo = result[vID[1]][i + 1];
-
-                                                        ShowSkipOnBar(skipFrom, skipTo);
-                                                        if (skipTo - skipFrom > 1) {
-
-                                                                if (inSkipRange(currentTime, skipFrom)) {
-                                                                        video.currentTime = skipTo;
-                                                                        TotalTimeUpdate(skipTo - currentTime);
-                                                                }
-                                                        }
-                                                }
-
-
-                                                var endpoint = result[vID[1]][result[vID[1]].length - 1];
-                                                if (endpoint > 0) {
-                                                        ShowSkipOnBar(endpoint, totalDuration);
-                                                        localEnd = false;
-                                                }
-                                                if ((result[vID[1]].length % 2) == 0 && currentTime >= endpoint && endpoint != 0 && Math.floor(currentTime < totalDuration)) {
-                                                        video.currentTime = Math.ceil(totalDuration);
-                                                        TotalTimeUpdate(totalDuration - currentTime);
-                                                }
-                                        }
                                 });
 
                                 //local
@@ -183,28 +155,29 @@ function InSkipper() {
                                                                 if (res != undefined && res[cID[1]] != undefined) {
                                                                         foundSyncedChannelData = true;
                                                                 }
-                                                                act(cID, res, video, totalDuration, currentTime, localStart, localMid, localEnd);
+                                                                checkStartMidEnd = act(cID, res, video, totalDuration, currentTime, checkStartMidEnd);
                                                         });
                                                         if (!foundSyncedChannelData) {
                                                                 chrome.storage.local.get(cID[1], function(rez) {
                                                                         // run on local cID
                                                                         var year = (document.getElementsByClassName("date")[0].textContent).match(/ (\d{4})/)[0];
-                                                                        var totalVideoTime=document.querySelector("video.html5-main-video").duration;
-                                                                        if (!foundSyncedChannelData && year >= 2012 &&totalVideoTime>120 &&totalVideoTime<1200) //only 2012 and after for public channel skips
-                                                                                act(cID, rez, video, totalDuration, currentTime, localStart, localMid, localEnd);
+                                                                        var totalVideoTime = document.querySelector("video.html5-main-video").duration;
+                                                                        if (!foundSyncedChannelData && year >= 2012 && totalVideoTime > 120 && totalVideoTime < 1200) //only 2012 and after for public channel skips
+                                                                                checkStartMidEnd = act(cID, rez, video, totalDuration, currentTime, checkStartMidEnd);
                                                                 });
                                                         }
 
                                                 }
                                                 //run on vID
-                                                act(vID, result, video, totalDuration, currentTime, localStart, localMid, localEnd);
+                                                checkStartMidEnd = act(vID, result, video, totalDuration, currentTime, checkStartMidEnd);
 
                                         });
 
                                 if (ee > 0)
                                         ShowSkipOnBar(ee, totalDuration, "purple");
                                 if (ee > 0 && currentTime > ee && currentTime < totalDuration - 1)
-                                        video.currentTime = Math.ceil(totalDuration);
+                                        video.currentTime = totalDuration - 0.05;
+
                         } catch (err) {}
                 }
 
