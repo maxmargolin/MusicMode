@@ -52,12 +52,12 @@ window.onload = function() {
                                         start = result[currentID][0];
                                         end = result[currentID][result[currentID].length - 1];
 
-                                        if (start != undefined && start != "0") {
+                                        if (start != undefined) {
                                                 lookForStart = false;
                                                 setStart(start);
                                         }
                                         localInner = !(ShowInnerSkips(result[currentID]));
-                                        if (end != undefined && end != "0") {
+                                        if (end != undefined) {
                                                 setEnd(end, videoLength);
                                                 lookForEnd = false;
 
@@ -72,7 +72,7 @@ window.onload = function() {
                                         if (lookForStart) {
                                                 try {
                                                         var start = sresult[currentID][0];
-                                                        if (start != undefined && start != 0) {
+                                                        if (start != undefined) {
                                                                 setStart(start);
                                                                 lookForStart = false
 
@@ -110,7 +110,7 @@ window.onload = function() {
 
                                                                 if (lookForEnd) { //look for channel start/end - synced
                                                                         var end = scresult[currentChannelID][1];
-                                                                        if (end != undefined && end != 0) {
+                                                                        if (end != undefined) {
                                                                                 setEnd(end, videoLength);
                                                                                 lookForEnd = false;
                                                                         }
@@ -290,9 +290,7 @@ window.onload = function() {
 
         function setEnd(end, length) {
                 if (end == 0) {
-
-                        document.getElementById('end').value = "0:00";
-                        document.getElementById('endc').innerHTML = "-" + "0:00";
+                        //dont do shiet
                 } else if (end > 0) { //deal with postive and negative representations
                         document.getElementById('end').value = ToTime(end);
                         document.getElementById('endc').innerHTML = "-" + ToTime(length - end);
@@ -494,7 +492,7 @@ window.onload = function() {
 
                         rates = result["RateCount"];
                         //send
-                        if (somethingChecked || (newStart != 0 || newEnd != 0) && (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
+                        if (somethingChecked || (newStart !== start || newEnd !== end) || pointA != 0 || pointB != 0 || pointC != 0 || pointD != 0 || pointE != 0 || pointF != 0)
 
                                 try {
                                         //stats

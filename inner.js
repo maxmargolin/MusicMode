@@ -67,14 +67,12 @@ function ShowSkipOnBar(aa, bb, color = "a") {
 function act(id, data, video, totalDuration, currentTime, toCheck) {
         toRet = toCheck.slice();
         if (data != undefined && data[id[1]] != undefined && data[id[1]][0] != undefined) {
+                toRet[0] = false;
                 var startpoint = data[id[1]][0];
-                if (startpoint > 0) {
-                        toRet[0] = false;
-                }
+                if (startpoint > 0) {}
                 //safety
                 if (toCheck[0]) { //start
                         ShowSkipOnBar(0, startpoint);
-                        toRet[0] = false;
                         if (currentTime > 0.05 && startpoint > 0 && inSkipRange(currentTime, 0)) {
                                 video.currentTime = startpoint;
                                 TotalTimeUpdate(startpoint - currentTime);
@@ -97,10 +95,12 @@ function act(id, data, video, totalDuration, currentTime, toCheck) {
                                 }
                         }
                 }
-
-                var end = data[id[1]][data[id[1]].length - 1];
+                var end = data[id[1]][data[id[1]].length - 1]; //unless theres no end
+                if ((data[id[1]].length % 2) == 0 && end != undefined)
+                        toRet[2] = false;
                 if (end < 0)
                         end = parseInt(video.duration + end); // end skip calculated to this specific video,remember end is negative
+
                 if (toCheck[2] && end > 0 && (data[id[1]].length % 2) == 0) {
                         toRet[2] = false;
                         ShowSkipOnBar(end, totalDuration);
