@@ -1105,7 +1105,7 @@ var data = [
         ["4qqOejeVTwU",0,182],
         ["UCb3tJ5NKw7mDxyaQ73mwbRg",4],
         ["8OARiNiJ_w8",48,250],
-        ["Ph54wQG8ynk",10],
+        ["Ph54wQG8ynk",25,233],
         ["UCVGVbOl6F5rGF4wSYS6Y5yQ",13],
         ["ckM97kSinLw",0,251],
         ["5cINJwaAn4Y",0,214],
@@ -1179,7 +1179,36 @@ var data = [
         ["SA_uTf9wCG0",12,243],
         ["I5Tpji53lMM",0,232],
         ["DGIgXP9SvB8",0,278],
-        ["P4ZxtbzE8YY",0,151]
+        ["P4ZxtbzE8YY",0,151],
+        ["NV-3s2wwC8c",11],
+        ["UCdMwyIy3ks",23],
+        ["UtF6Jej8yb4",11],
+        ["RubBzkZzpUA",0,56,123,315],
+        ["wylMwU1wEOM",5],
+        ["-wo8HsrmYvU",8],
+        ["UCwWhs_6x42TyRM4Wstoq8HA",0,-11],
+        ["UClDlxHXefg3Jh7gLx0-aDew",0,-5],
+        ["BldYlGqs7pA",16],
+        ["UCMtFAi84ehTSYSE9XoHefig",0,-5],
+        ["UCGyoO1aDhfnc42tYREameAw",7],
+        ["UC8-Th83bH_thdKZDJCrn88g",0,-9],
+        ["qBB_QOZNEdc",17],
+        ["bzW9fmwcmG4",33],
+        ["wfWIs2gFTAM",32,124,170,256,345,398],
+        ["op4B9sNGi0k",22,226],
+        ["ZEkImgh--PE",29,244],
+        ["S0nbOenwCLw",17,152,177],
+        ["PVbQrvlB_gw",10],
+        ["J-dv_DcDD_A",20,182,215],
+        ["95Rzsn-zjr0",7],
+        ["5IGJkd0fNGU",40],
+        ["Fczta5pF7-A",5],
+        ["CCAAETuVym0",46],
+        ["fbHbTBP_u7U",0,206],
+        ["VQ6TA11x5iM",35,257]
+
+
+
 
 ];
 var obj = {};
