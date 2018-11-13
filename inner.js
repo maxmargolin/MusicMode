@@ -46,6 +46,7 @@ function ShowSkipOnBar(aa, bb, color = "a") {
                 if (bar != undefined) {
                         var skipBar = document.createElement("div");
                         skipBar.setAttribute("class", "skipBar");
+                        skipBar.setAttribute("data-vid", location.href.match(/v\=(.{11})/)[1]);
                         skipBar.setAttribute("id", "skipBar" + aa + "x" + bb);
                         let vid = document.querySelector("video.html5-main-video");
                         let tx = vid.duration;
@@ -125,12 +126,15 @@ function act(id, data, video, totalDuration, currentTime, toCheck) {
 }
 
 function InSkipper() {
-
         chrome.storage.local.get("on", function(result) {
                 try {
+
+
                         var src = document.getElementsByClassName("html5-main-video")[0].getAttribute("src");
                         var link = String(document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0]);
+
                         var vID = link.match(/v\=(.{11})/);
+
                         if (vID == undefined || vID == null) { //tv format ?
                                 //link = document.getElementById("atr_challenge");
                                 //vID = link.value.match(/e\=(.{11})/); //for foramts like this : www.youtube.com/tv#/watch/video/control?v=ckM97kSinLw
@@ -140,13 +144,18 @@ function InSkipper() {
                                 }
                         }
 
+                        if (vID === null || vID === undefined)
+                                vID = ["I really Need To ReWritethings here but unfortunaly this isnt my full tie job =/",document.getElementById("page-manager").children[0].getAttribute("video-id")];
                         if (vID == undefined || (prevID != vID[1]) || (prevSRC != src)) //video change
                         {
                                 ee = 0;
                                 delmarks();
                         }
+
                         prevSRC = src;
                         prevID = vID[1];
+
+
 
                 } catch (err) {
                         delmarks();
@@ -157,61 +166,76 @@ function InSkipper() {
                         if (ends != null)
                                 ee = ends[1];
 
-                          try {
-                        var owner = undefined;
-                        var cID = undefined;
                         try {
-                                var owner = document.getElementById("owner-container").firstChild.firstChild;
-                                var cID = owner.getAttribute("href").match(/channel.(.*)/);
-                        } catch (err) {}
-                        let video = document.querySelector("video.html5-main-video");
-                        let currentTime = video.currentTime; // Fractional, in seconds
-                        let totalDuration = video.duration;
+                                var owner = undefined;
+                                var cID = undefined;
+                                try {
+                                        var owner = document.getElementById("owner-container").firstChild.firstChild;
+                                        var cID = owner.getAttribute("href").match(/channel.(.*)/);
+                                } catch (err) {}
+                                let video = document.querySelector("video.html5-main-video");
+                                let currentTime = video.currentTime; // Fractional, in seconds
+                                let totalDuration = video.duration;
 
-                        var checkStartMidEnd = [true, true, true]; //start mid end
-                        chrome.storage.sync.get(vID[1], function(svRes) {
-                                checkStartMidEnd = act(vID, svRes, video, totalDuration, currentTime, checkStartMidEnd);
-                        });
-
-                        //local
-                        if (vID[1] != undefined)
-                                chrome.storage.local.get(vID[1], function(result) {
-                                        if (result == undefined || result[vID[1]] == undefined || result[vID[1]][0] == undefined) {
-                                                var foundSyncedChannelData = false;
-                                                if (cID != undefined) {
-                                                        chrome.storage.sync.get(cID[1], function(res) {
-                                                                // run on synced cID
-                                                                if (res != undefined && res[cID[1]] != undefined) {
-                                                                        foundSyncedChannelData = true;
-                                                                }
-                                                                checkStartMidEnd = act(cID, res, video, totalDuration, currentTime, checkStartMidEnd);
-                                                        });
-                                                }
-                                                if (!foundSyncedChannelData && cID != undefined) {
-                                                        chrome.storage.local.get(cID[1], function(rez) {
-                                                                // run on local cID
-                                                                var year = (document.getElementsByClassName("date")[0].textContent).match(/ (\d{4})/)[0];
-                                                                var totalVideoTime = document.querySelector("video.html5-main-video").duration;
-                                                                if (!foundSyncedChannelData && year >= 2012 && totalVideoTime > 120 && totalVideoTime < 1200) //only 2012 and after for public channel skips
-                                                                        checkStartMidEnd = act(cID, rez, video, totalDuration, currentTime, checkStartMidEnd);
-                                                        });
-                                                }
-
-                                        }
-                                        //run on vID
-                                        checkStartMidEnd = act(vID, result, video, totalDuration, currentTime, checkStartMidEnd);
-
+                                var checkStartMidEnd = [true, true, true]; //start mid end
+                                chrome.storage.sync.get(vID[1], function(svRes) {
+                                        checkStartMidEnd = act(vID, svRes, video, totalDuration, currentTime, checkStartMidEnd);
                                 });
 
-                        if (ee > 0)
-                                ShowSkipOnBar(ee, totalDuration, "purple");
-                        if (ee > 0 && currentTime > ee && currentTime < totalDuration - 1)
-                                video.currentTime = totalDuration - 0.05;
+                                //local
+                                if (vID[1] != undefined)
+                                        chrome.storage.local.get(vID[1], function(result) {
+                                                if (result == undefined || result[vID[1]] == undefined || result[vID[1]][0] == undefined) {
+                                                        var foundSyncedChannelData = false;
+                                                        if (cID != undefined) {
+                                                                chrome.storage.sync.get(cID[1], function(res) {
+                                                                        // run on synced cID
+                                                                        if (res != undefined && res[cID[1]] != undefined) {
+                                                                                foundSyncedChannelData = true;
+                                                                        }
+                                                                        checkStartMidEnd = act(cID, res, video, totalDuration, currentTime, checkStartMidEnd);
+                                                                });
+                                                        }
+                                                        if (!foundSyncedChannelData && cID != undefined) {
+                                                                chrome.storage.local.get(cID[1], function(rez) {
+                                                                        // run on local cID
+                                                                        var year = (document.getElementsByClassName("date")[0].textContent).match(/ (\d{4})/)[0];
+                                                                        var totalVideoTime = document.querySelector("video.html5-main-video").duration;
+                                                                        if (!foundSyncedChannelData && year >= 2012 && totalVideoTime > 120 && totalVideoTime < 1200) //only 2012 and after for public channel skips
+                                                                                checkStartMidEnd = act(cID, rez, video, totalDuration, currentTime, checkStartMidEnd);
+                                                                });
+                                                        }
+
+                                                }
+                                                //run on vID
+                                                checkStartMidEnd = act(vID, result, video, totalDuration, currentTime, checkStartMidEnd);
+
+                                        });
+
+                                if (ee > 0)
+                                        ShowSkipOnBar(ee, totalDuration, "purple");
+                                if (ee > 0 && currentTime > ee && currentTime < totalDuration - 1)
+                                        video.currentTime = totalDuration - 0.05;
 
                         } catch (err) {}
+
                 }
 
+                var potential = document.getElementsByClassName("skipBar");
+                for (var i = 0; i < potential.length; i++) {
+                        if (potential[i].getAttribute("data-vid") != vID[1]); {
+                                potential[i].className += " toDel"
+                        }
+                }
+
+                var toDel = document.getElementsByClassName("toDel");
+                while (toDel[0]) {
+                        toDel[0].parentNode.removeChild(toDel[0]);
+                }
+
+
         });
+
 }
 
 function inSkipRange(current_time, skip_time) {
