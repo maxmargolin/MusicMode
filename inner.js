@@ -1,7 +1,7 @@
 var prevID = 0;
 var prevSRC = "0";
 var ee = 0; //end argument in url
-
+window.lastStarSkipID = 1;
 setInterval(InSkipper, 400);
 
 
@@ -38,6 +38,7 @@ chrome.runtime.onMessage.addListener(
 
 
 function ShowSkipOnBar(aa, bb, color = "a") {
+        console.log(document.getElementById('skipBar' + aa + "x" + bb));
         if (document.getElementById('skipBar' + aa + "x" + bb) == null) {
                 var bar = document.getElementsByClassName("ytp-progress-list")[0];
                 if (bar == undefined) {
@@ -84,11 +85,13 @@ function act(id, data, video, totalDuration, currentTime, toCheck) {
                 //safety
                 if (toCheck[0]) { //start
                         ShowSkipOnBar(0, startpoint);
-                        if (currentTime > 0.05 && startpoint > 0 && inSkipRange(currentTime, 0)) {
-                                video.currentTime = startpoint;
-                                TotalTimeUpdate(startpoint - currentTime);
+                        if (id[1] != lastStarSkipID) {
+                                if (currentTime > 0.05 && startpoint > 0 && inSkipRange(currentTime, 0)) {
+                                        video.currentTime = startpoint;
+                                        TotalTimeUpdate(startpoint - currentTime);
 
-
+                                }
+                                lastStarSkipID = id[1];
                         }
                 }
 
@@ -143,9 +146,15 @@ function InSkipper() {
                                         vID = url.match(/v\=(.{11})/); //regex for ID
                                 }
                         }
+                        try {
+                                if (vID === null || vID === undefined)
+                                        vID = ["I really Need To ReWritethings here but unfortunaly this isnt my full tie job =/", document.getElementById("page-manager").children[0].getAttribute("video-id")];
 
-                        if (vID === null || vID === undefined)
-                                vID = ["I really Need To ReWritethings here but unfortunaly this isnt my full tie job =/",document.getElementById("page-manager").children[0].getAttribute("video-id")];
+                        } catch (err) {;
+                        }
+
+                        if (vID[1] === null || vID[1] === undefined)
+                                vID = ["it gets worse", document.getElementById("page-manager").children[1].getAttribute("video-id")];
                         if (vID == undefined || (prevID != vID[1]) || (prevSRC != src)) //video change
                         {
                                 ee = 0;
@@ -159,6 +168,8 @@ function InSkipper() {
 
                 } catch (err) {
                         delmarks();
+
+                        console.log("deleted");
                 }
                 if (result["on"] && vID != undefined) {
                         var curl = location.href; //current url
@@ -223,7 +234,8 @@ function InSkipper() {
 
                 var potential = document.getElementsByClassName("skipBar");
                 for (var i = 0; i < potential.length; i++) {
-                        if (potential[i].getAttribute("data-vid") != vID[1]); {
+                        if (potential[i].getAttribute("data-vid") !== vID[1]); {
+                                console.log(potential[i].getAttribute("data-vid") + " X " + vID[1]);
                                 potential[i].className += " toDel"
                         }
                 }
@@ -239,5 +251,5 @@ function InSkipper() {
 }
 
 function inSkipRange(current_time, skip_time) {
-        return (current_time >= skip_time && current_time <= skip_time + 1);
+        return (current_time >= skip_time && current_time <= skip_time + 2);
 }
