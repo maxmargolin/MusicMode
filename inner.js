@@ -14,8 +14,9 @@ chrome.runtime.onMessage.addListener(
                         delmarks();
                 } else if (request.req == "id") {
                         var curl = location.href;
+                        console.log("something");
                         var vID = curl.match(/v\=(.{11})/);
-                        var owner = document.getElementById("owner-container").firstChild.firstChild;
+                        var owner = document.getElementById("channel-name").firstElementChild.firstElementChild.firstElementChild.firstElementChild // needs to be changed
                         var date = document.getElementsByClassName("date")[0].textContent;
                         var cID = owner.getAttribute("href").match(/channel.(.*)/);
                         let video = document.querySelector("video.html5-main-video");
@@ -38,7 +39,6 @@ chrome.runtime.onMessage.addListener(
 
 
 function ShowSkipOnBar(aa, bb, color = "a") {
-        console.log(document.getElementById('skipBar' + aa + "x" + bb));
         if (document.getElementById('skipBar' + aa + "x" + bb) == null) {
                 var bar = document.getElementsByClassName("ytp-progress-list")[0];
                 if (bar == undefined) {
@@ -168,8 +168,6 @@ function InSkipper() {
 
                 } catch (err) {
                         delmarks();
-
-                        console.log("deleted");
                 }
                 if (result["on"] && vID != undefined) {
                         var curl = location.href; //current url
@@ -234,8 +232,7 @@ function InSkipper() {
 
                 var potential = document.getElementsByClassName("skipBar");
                 for (var i = 0; i < potential.length; i++) {
-                        if (potential[i].getAttribute("data-vid") !== vID[1]); {
-                                console.log(potential[i].getAttribute("data-vid") + " X " + vID[1]);
+                        if (potential[i].getAttribute("data-vid") !== vID[1]) {
                                 potential[i].className += " toDel"
                         }
                 }

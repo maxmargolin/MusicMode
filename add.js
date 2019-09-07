@@ -14,7 +14,6 @@ window.onload = function() {
                 chrome.tabs.sendMessage(tabs[0].id, {
                         req: "id"
                 }, function(response) { //ask for information for this page
-
                         videoLength = response.vLength;
                         currentID = response.cvID;
                         currentChannelID = response.ccID;
