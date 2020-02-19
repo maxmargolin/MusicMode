@@ -448,7 +448,7 @@ window.onload = function() {
                 obj[currentID] = arr;
                 try {
                         chrome.storage.sync.set(obj);
-                } catch (err) {  }
+                } catch (err) {}
 
 
                 var somethingChecked = (document.getElementById("cb2").checked || document.getElementById("cb4").checked);

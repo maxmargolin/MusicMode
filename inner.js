@@ -38,35 +38,40 @@ chrome.runtime.onMessage.addListener(
 
 
 function ShowSkipOnBar(aa, bb, color = "a") {
-        if (document.getElementById('skipBar' + aa + "x" + bb) == null) {
-                var bar = document.getElementsByClassName("ytp-progress-list")[0];
-                if (bar == undefined) {
-                        bar = document.getElementsByClassName("progress-bar-played")[0];
-                }
-                if (bar != undefined) {
-                        var skipBar = document.createElement("div");
-                        skipBar.setAttribute("class", "skipBar");
-                        skipBar.setAttribute("data-vid", location.href.match(/v\=(.{11})/)[1]);
-                        skipBar.setAttribute("id", "skipBar" + aa + "x" + bb);
-                        let vid = document.querySelector("video.html5-main-video");
-                        let tx = vid.duration;
-                        if (tx != null && tx > 0) {
-                                //skipBar.setAttribute("title", "skipper");
-                                var left = 100 * aa / tx;
-                                var right = (100 * (bb - aa) / tx) - 0.1;
-                                if (color == "a")
-                                        skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: lightgreen; border: 1px solid black;")
-                                else
-                                        skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: " + color + "; border: 1px solid black;")
+        try {
+                if (document.getElementById('skipBar' + aa + "x" + bb) == null) {
+                        var bar = document.getElementsByClassName("ytp-progress-list")[0];
+                        if (bar == undefined) {
+                                bar = document.getElementsByClassName("progress-bar-played")[0];
+                        }
+                        if (bar != undefined) {
+                                var skipBar = document.createElement("div");
+                                skipBar.setAttribute("class", "skipBar");
+                                skipBar.setAttribute("data-vid", location.href.match(/v\=(.{11})/)[1]);
+                                skipBar.setAttribute("id", "skipBar" + aa + "x" + bb);
+                                let vid = document.querySelector("video.html5-main-video");
+                                let tx = vid.duration;
+                                if (tx != null && tx > 0) {
+                                        //skipBar.setAttribute("title", "skipper");
+                                        var left = 100 * aa / tx;
+                                        var right = (100 * (bb - aa) / tx) - 0.1;
+                                        if (color == "a")
+                                                skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: lightgreen; border: 1px solid black;")
+                                        else
+                                                skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; height: 50%; background-color: " + color + "; border: 1px solid black;")
 
-                                var barArea = document.getElementsByClassName("ytp-progress-bar")[0]; // Get the <ul> element to insert a new node
-                                if (barArea == undefined) {
-                                        barArea = document.getElementsByClassName("progress-bar-line")[0];
-                                        skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; background-color: lightgreen;")
+                                        var barArea = document.getElementsByClassName("ytp-progress-bar-container")[0]; // Get the <ul> element to insert a new node
+                                        barArea = document.getElementsByClassName("ytp-chapter-hover-container")[0];
+                                        if (barArea == undefined) {
+                                                barArea = document.getElementsByClassName("progress-bar-line")[0];
+                                                skipBar.setAttribute("style", "position: absolute; left: " + left + "%; width: " + right + "%; background-color: lightgreen;")
+                                        }
+                                        barArea.insertBefore(skipBar, bar);
                                 }
-                                barArea.insertBefore(skipBar, bar);
                         }
                 }
+        } catch (err) {;
+                console.log("ShowSkipOnBar error");
         }
 }
 
