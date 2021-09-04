@@ -15,9 +15,15 @@ chrome.runtime.onMessage.addListener(
                 } else if (request.req == "id") {
                         var curl = location.href;
                         var vID = curl.match(/v\=(.{11})/);
-                        var owner = document.getElementById("channel-name").firstElementChild.firstElementChild.firstElementChild.firstElementChild // needs to be changed
-                        var date = document.getElementById("date").textContent;
-                        var cID = owner.getAttribute("href").match(/channel.(.*)/);
+                        var owner = document.getElementsByClassName(".ytd-video-owner-renderer")[0];
+                        if (owner == undefined) {
+                                owner = document.getElementById("channel-name").firstElementChild.firstElementChild.firstElementChild.firstElementChild // needs to be changed
+                        }
+                        //var date = document.getElementById("date").textContent;
+                        var date = 0;
+                        if (owner != undefined) {
+                                var cID = owner.getAttribute("href").match(/channel.(.*)/);
+                        }
                         let video = document.querySelector("video.html5-main-video");
                         let totalDuration = video.duration;
                         var title = document.getElementsByClassName("title style-scope ytd-video-primary-info-renderer")[0].textContent; //title

@@ -102,8 +102,8 @@ function delmarks() {
 //skip part of video
 function process() {
         delmarks();
-        chrome.storage.local.get("ChangeURL", function(result) {
-                if (result["ChangeURL"]) {
+        /* chrome.storage.local.get("ChangeURL", function(result) {
+                if (false && result["ChangeURL"]) { //Can run without it and chrome does not like extra permissions, thus disabled
                         try {
                                 var curl = location.href; //current url
                                 var vID = curl.match(/v\=(.{11})/); //regex for ID
@@ -138,7 +138,7 @@ function process() {
                         } catch (e) {}
                 }
         });
-        delmarks();
+        delmarks(); */
 }
 
 function TotalTimeUpdate(toAdd) {
